@@ -7,6 +7,7 @@
   width: 413px;
   object-fit: cover;
   display: block;
+  border-radius: 12px;
 }
 
 .card__content {
@@ -16,8 +17,13 @@
 }
 
 .card__title {
-  padding: 0;
+  padding: 10px 0;
   margin: 0;
+  width: auto;
+  height: 24px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
 }
 
 .card__like-btn {
