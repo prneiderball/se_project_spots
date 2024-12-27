@@ -87,8 +87,8 @@
   }
 
   .profile__edit-btn {
-    justify-content: center;
-    margin-bottom: 20px;
+    margin: 0 90px 20px;
+    padding: 0;
   }
 
   .profile__add-btn {
