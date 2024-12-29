@@ -52,4 +52,9 @@
     width: 20px;
     height: 18px;
   }
+
+  .card__content {
+    width: 288px;
+    height: 318px;
+  }
 }
