@@ -41,6 +41,7 @@
 @media screen and (max-width: 627px) {
   .card__image {
     height: 288px;
+    width: 288px;
   }
 
   .card__title {
@@ -55,6 +56,6 @@
 
   .card__content {
     width: 288px;
-    height: 318px;
+    max-height: 318px;
   }
 }
