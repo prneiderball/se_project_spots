@@ -14,6 +14,7 @@
 .card__content {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 40px;
 }
 
 .card__title {
@@ -61,5 +62,6 @@
   .card__content {
     width: 100%;
     min-height: 318px;
+    padding-bottom: 20px;
   }
 }
