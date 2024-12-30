@@ -16,3 +16,4 @@ HTML5
 - Designed to work well on both desktop and mobile devices.
 
 This project is deployed to Github Pages at
+link: https://prneiderball.github.io/se_project_spots/
