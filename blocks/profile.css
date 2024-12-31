@@ -33,6 +33,7 @@
 
 .profile__description {
   color: #212121b2;
+  font-weight: 500;
   max-width: 420px;
   margin: 0;
   text-overflow: ellipsis;
@@ -45,6 +46,7 @@
 
 .profile__edit-btn {
   color: #212121;
+  font-weight: 500;
   opacity: 0.7;
   cursor: pointer;
   margin-top: auto;
@@ -59,7 +61,6 @@
 }
 
 .profile__edit-btn:hover {
-  color: #212121;
   opacity: 1;
 }
 
@@ -76,7 +77,6 @@
 }
 
 .profile__add-btn:hover {
-  background-color: #212121;
   opacity: 0.8;
 }
 
