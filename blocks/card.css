@@ -14,7 +14,6 @@
 .card__content {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 40px;
 }
 
 .card__title {
@@ -42,6 +41,11 @@
   cursor: pointer;
 }
 
+.card__like-btn:hover {
+  color: #212121;
+  opacity: 1;
+}
+
 @media screen and (max-width: 627px) {
   .card__image {
     height: 288px;
@@ -61,7 +65,5 @@
 
   .card__content {
     width: 100%;
-    min-height: 318px;
-    padding-bottom: 20px;
   }
 }
