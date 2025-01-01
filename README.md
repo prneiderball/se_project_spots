@@ -19,4 +19,4 @@ This project is deployed to Github Pages at
 link: https://prneiderball.github.io/se_project_spots/
 
 Below is a link to a video detailing the project:
-link: https://drive.google.com/file/d/1bv-_z_MxtcVmtyQ65WCxZc-cLwJTaFsD/view?usp=drive_link
+link: https://drive.google.com/file/d/1bv-_z_MxtcVmtyQ65WCxZc-cLwJTaFsD/view?usp=sharing
