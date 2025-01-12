@@ -5,16 +5,15 @@
   bottom: 0;
   right: 0;
   background-color: rgba(33, 33, 33, 0.4);
-  display: flex;
+  display: none; /* Initially hide the modal */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
   padding: 0 10px;
 }
 
 .modal_opened {
-  visibility: visible;
+  display: flex; /* Show the modal when the class is added */
 }
 
 .modal__container {
