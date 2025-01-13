@@ -44,6 +44,7 @@ function getCardElement(data) {
 
 // Function to render all cards on the page
 function renderCards() {
+  cardList.innerHTML = "";
   initialCards.forEach((cardData) => {
     const card = getCardElement(cardData);
     cardList.appendChild(card);
