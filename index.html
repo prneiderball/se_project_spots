@@ -33,11 +33,11 @@
             <img src="./images/plus.svg" alt="Plus icon" /> New Post
           </button>
         </section>
-        <section class="cards page__section">
+        <div class="cards page__section">
           <ul class="cards__list">
             <!--images will render from template here-->
           </ul>
-        </section>
+        </div>
       </main>
       <footer class="footer page__section">
         <h2 class="footer__content">2024 &copy; Spots</h2>
@@ -59,7 +59,7 @@
       </template>
       <div class="modal" id="edit-profile-modal">
         <div class="modal__container">
-          <button type="submit" class="modal__close-btn"></button>
+          <button type="button" class="modal__close-btn"></button>
           <h2 class="modal__title">Edit Profile</h2>
           <form name="edit-profile" class="modal__form">
             <label for="name" class="modal__label">
