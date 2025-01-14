@@ -24,6 +24,7 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
   },
 ];
+
 // Get the card list and template elements
 const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template");
@@ -89,12 +90,12 @@ function setProfileDescription(description) {
 function openModal() {
   modalNameInput.value = getProfileName();
   modalDescriptionInput.value = getProfileDescription();
-  editProfileModal.style.display = "flex";
+  editProfileModal.classList.add("modal_opened"); // Add the class to open the modal
 }
 
 // Function to close the modal
 function closeModal() {
-  editProfileModal.style.display = "none";
+  editProfileModal.classList.remove("modal_opened"); // Remove the class to close the modal
 }
 
 // Form handler for updating the profile

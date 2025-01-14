@@ -5,7 +5,7 @@
   bottom: 0;
   right: 0;
   background-color: rgba(33, 33, 33, 0.4);
-  display: none; /* Initially hide the modal */
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@
 }
 
 .modal_opened {
-  display: flex; /* Show the modal when the class is added */
+  display: flex;
 }
 
 .modal__container {
@@ -28,6 +28,7 @@
 
 .modal__close-btn {
   background-image: url(../images/close.svg);
+  background-color: transparent;
   position: absolute;
   top: 32px;
   right: 50px;
@@ -97,4 +98,8 @@
   .modal__submit-btn {
     width: 100%;
   }
+}
+
+body.modal-opened {
+  overflow: hidden;
 }
