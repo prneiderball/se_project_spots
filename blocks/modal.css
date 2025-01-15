@@ -55,6 +55,7 @@
   font-size: 16px;
   line-height: 17.6px;
   font-weight: 500;
+  color: #212121b2;
 }
 
 .modal__input {
@@ -70,7 +71,7 @@
   width: 156px;
   padding: 18px 0;
   background-color: #000;
-  color: #fff;
+  color: #fcf5e5;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
