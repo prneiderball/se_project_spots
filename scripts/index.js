@@ -35,7 +35,6 @@ function getCardElement(data) {
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
 
-  // Set the image and title
   cardImage.src = data.link;
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
@@ -52,22 +51,25 @@ function renderCards() {
   });
 }
 
-// Call renderCards once the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", renderCards);
-
-// Profile logic
+// Profile and Modal logic
 const profileNameElement = document.querySelector(".profile__name");
 const profileDescriptionElement = document.querySelector(
   ".profile__description"
 );
 const profileEditButton = document.querySelector(".profile__edit-btn");
+const newPostButton = document.querySelector(".profile__add-btn");
 
-// Modal logic
 const editProfileModal = document.querySelector("#edit-profile-modal");
-const modalCloseBtn = editProfileModal.querySelector(".modal__close-btn");
+const newPostModal = document.querySelector("#new-post-modal");
+const modals = [editProfileModal, newPostModal];
+
 const modalNameInput = editProfileModal.querySelector("#name");
 const modalDescriptionInput = editProfileModal.querySelector("#description");
 const profileFormElement = editProfileModal.querySelector("form");
+
+const imageUrlInput = newPostModal.querySelector("#image_url");
+const captionInput = newPostModal.querySelector("#new-post-caption-input");
+const newPostFormElement = newPostModal.querySelector(".modal__form");
 
 // Functions to get and set profile data
 function getProfileName() {
@@ -86,33 +88,81 @@ function setProfileDescription(description) {
   profileDescriptionElement.textContent = description;
 }
 
-// Function to open the modal
-function openModal() {
-  modalNameInput.value = getProfileName();
-  modalDescriptionInput.value = getProfileDescription();
-  editProfileModal.classList.add("modal_opened"); // Add the class to open the modal
+// General function to open any modal
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    if (modalId === "edit-profile-modal") {
+      modalNameInput.value = getProfileName();
+      modalDescriptionInput.value = getProfileDescription();
+    } else if (modalId === "new-post-modal") {
+      imageUrlInput.value = "";
+      captionInput.value = "";
+    }
+    modal.classList.add("modal_opened");
+  }
 }
 
-// Function to close the modal
-function closeModal() {
-  editProfileModal.classList.remove("modal_opened"); // Remove the class to close the modal
+// General function to close any modal
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
+}
+
+// Function to close any modal when clicking outside of it
+function handleClickOutsideModal(e) {
+  if (e.target.classList.contains("modal")) {
+    closeModal(e.target);
+  }
 }
 
 // Form handler for updating the profile
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-
-  // Update profile with form values
-  const updatedName = modalNameInput.value;
-  const updatedDescription = modalDescriptionInput.value;
-
-  setProfileName(updatedName);
-  setProfileDescription(updatedDescription);
-
-  closeModal();
+  setProfileName(modalNameInput.value);
+  setProfileDescription(modalDescriptionInput.value);
+  closeModal(editProfileModal);
+  evt.target.reset();
 }
 
-// Event listeners
-profileEditButton.addEventListener("click", openModal);
-modalCloseBtn.addEventListener("click", closeModal);
+// Form handler for new post creation
+function handleNewPostFormSubmit(evt) {
+  evt.preventDefault();
+
+  const newPostData = {
+    name: captionInput.value,
+    link: imageUrlInput.value,
+  };
+
+  // Basic validation
+  if (!newPostData.link || !newPostData.name) {
+    console.error("Please provide both an image URL and a caption.");
+    return;
+  }
+
+  // Create a new card with the data
+  const newCard = getCardElement(newPostData);
+  cardList.prepend(newCard); // Add new card to the beginning of the list
+
+  closeModal(newPostModal);
+  evt.target.reset();
+}
+
+// Event listeners for modals
+profileEditButton.addEventListener("click", () =>
+  openModal("edit-profile-modal")
+);
+newPostButton.addEventListener("click", () => openModal("new-post-modal"));
+
+modals.forEach((modal) => {
+  modal
+    .querySelector(".modal__close-btn")
+    .addEventListener("click", () => closeModal(modal));
+  modal.addEventListener("click", handleClickOutsideModal);
+});
+
+// Form submissions
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
+newPostFormElement.addEventListener("submit", handleNewPostFormSubmit);
+
+// Render cards when DOM is loaded
+document.addEventListener("DOMContentLoaded", renderCards);
