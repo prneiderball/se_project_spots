@@ -99,7 +99,6 @@ function handleClickOutsideModal(e) {
 }
 
 function renderCards() {
-  cardList.innerHTML = "";
   initialCards.forEach((cardData) => {
     const card = getCardElement(cardData);
     cardList.appendChild(card);
@@ -120,13 +119,15 @@ function openModal(modalId) {
 
 function addNewCard(name, link) {
   if (name && link) {
-    initialCards.push({ name, link });
-    renderCards();
+    const newCardData = { name, link };
+    const newCardElement = getCardElement(newCardData);
+    cardList.appendChild(newCardElement);
+    initialCards.push(newCardData); // Optional: keep array updated
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderCards();
+  renderCards(); // Populate card list initially
 
   document
     .querySelector(".profile__edit-btn")
