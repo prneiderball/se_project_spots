@@ -40,6 +40,20 @@
   cursor: pointer;
 }
 
+.modal__close-preview {
+  background-image: url(../images/closewhite.svg);
+  position: absolute;
+  top: 0;
+  right: -52.5px;
+  height: 40px;
+  width: 40px;
+  opacity: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  border: none;
+}
+
 .modal__title {
   margin: 0 0 32px;
   font-size: 32px;
@@ -90,6 +104,8 @@
 }
 
 .modal__content-preview {
+  padding: 0;
+  position: relative;
 }
 
 .modal__figure {

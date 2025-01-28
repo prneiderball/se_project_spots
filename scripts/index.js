@@ -118,6 +118,13 @@ function openModal(modalId) {
   }
 }
 
+function addNewCard(name, link) {
+  if (name && link) {
+    initialCards.push({ name, link });
+    renderCards();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderCards();
 
@@ -127,4 +134,27 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelector(".profile__add-btn")
     .addEventListener("click", () => openModal("new-post-modal"));
+
+  // Handle form submission for creating new post
+  const newPostForm = document.querySelector("#new-post-modal .modal__form");
+  if (newPostForm) {
+    newPostForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const imageUrlInput = document.querySelector("#image_url");
+      const captionInput = document.querySelector("#new-post-caption-input");
+
+      if (imageUrlInput && captionInput) {
+        addNewCard(captionInput.value, imageUrlInput.value);
+        closeModal(document.querySelector("#new-post-modal"));
+        imageUrlInput.value = "";
+        captionInput.value = "";
+      }
+    });
+  }
+
+  const closeBtns = document.querySelectorAll(".modal__close-btn");
+  closeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => closeModal(btn.closest(".modal")));
+  });
 });
