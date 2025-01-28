@@ -79,6 +79,41 @@
   transition: background 0.03s;
 }
 
+.modal__type_image {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.modal_content {
+  background-color: transparent;
+  padding: 0;
+}
+
+.modal__content-preview {
+}
+
+.modal__figure {
+  margin: 0;
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.modal__image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.modal__caption {
+  background-color: #212;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  margin-top: 10px;
+}
+
 @media screen and (max-width: 627px) {
   .modal__container {
     padding: 12px;

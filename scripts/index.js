@@ -29,10 +29,11 @@ const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template");
 
 function getCardElement(data) {
-  const cardElement = cardTemplate.content.cloneNode(true);
+  const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
   const cardLikedBtn = cardElement.querySelector(".card__like-btn");
+  const deleteBtn = cardElement.querySelector(".card__delete-btn");
 
   cardImage.src = data.link;
   cardImage.alt = data.name;
@@ -46,27 +47,49 @@ function getCardElement(data) {
     openImageModal(data.link, data.name)
   );
 
+  deleteBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    cardElement.remove();
+  });
+
   return cardElement;
 }
 
 function openImageModal(imageUrl, imageCaption) {
-  const imageModal = document.querySelector("#image-preview-modal");
-  const modalImage = imageModal.querySelector(".modal__image");
-  const modalCaption = imageModal.querySelector(".modal__caption");
+  const previewModal = document.querySelector("#preview-modal");
+  if (!previewModal) {
+    console.error("Preview Modal not found");
+    return;
+  }
 
-  modalImage.src = imageUrl;
-  modalImage.alt = imageCaption;
-  modalCaption.textContent = imageCaption;
+  const modalFigure = previewModal.querySelector(".modal__figure");
+  if (!modalFigure) {
+    console.error("Modal figure not found");
+    return;
+  }
 
-  imageModal.classList.add("modal_opened");
-  imageModal.addEventListener("click", handleClickOutsideModal);
-  imageModal
-    .querySelector(".modal__close-btn")
-    .addEventListener("click", () => closeModal(imageModal));
+  const modalImage = modalFigure.querySelector(".modal__image");
+  const modalCaption = modalFigure.querySelector(".modal__caption");
+
+  if (modalImage && modalCaption) {
+    modalImage.src = imageUrl;
+    modalImage.alt = imageCaption;
+    modalCaption.textContent = imageCaption;
+
+    previewModal.classList.add("modal_opened");
+    previewModal.addEventListener("click", handleClickOutsideModal);
+    const closeBtn = previewModal.querySelector(".modal__close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => closeModal(previewModal));
+    }
+  } else {
+    console.error("Modal image or caption not found");
+  }
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+  modal.removeEventListener("click", handleClickOutsideModal);
 }
 
 function handleClickOutsideModal(e) {
@@ -83,4 +106,25 @@ function renderCards() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", renderCards);
+function openModal(modalId) {
+  const modal = document.querySelector(`#${modalId}`);
+  if (modal) {
+    modal.classList.add("modal_opened");
+    modal.addEventListener("click", handleClickOutsideModal);
+    const closeBtn = modal.querySelector(".modal__close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => closeModal(modal));
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCards();
+
+  document
+    .querySelector(".profile__edit-btn")
+    .addEventListener("click", () => openModal("edit-profile-modal"));
+  document
+    .querySelector(".profile__add-btn")
+    .addEventListener("click", () => openModal("new-post-modal"));
+});
