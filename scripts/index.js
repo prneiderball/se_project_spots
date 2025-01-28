@@ -129,6 +129,7 @@ function addNewCard(name, link) {
 document.addEventListener("DOMContentLoaded", () => {
   renderCards(); // Populate card list initially
 
+  // Open modals
   document
     .querySelector(".profile__edit-btn")
     .addEventListener("click", () => openModal("edit-profile-modal"));
@@ -154,6 +155,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Profile form handling
+  const profileFormElement = document.querySelector(
+    "#edit-profile-modal .modal__form"
+  );
+  const nameInput = document.querySelector("#name");
+  const jobInput = document.querySelector("#description");
+  const profileNameElement = document.querySelector(".profile__name");
+  const profileJobElement = document.querySelector(".profile__job");
+
+  // The form submission handler
+  function handleProfileFormSubmit(evt) {
+    evt.preventDefault(); // Prevent default form submission
+
+    // Get the values from the input fields
+    const name = nameInput.value;
+    const job = jobInput.value;
+
+    // Update the profile with the new values
+    profileNameElement.textContent = name;
+    profileJobElement.textContent = job;
+
+    // Close the modal
+    closeModal(document.querySelector("#edit-profile-modal"));
+  }
+
+  // Connect the handler to the form
+  if (profileFormElement) {
+    profileFormElement.addEventListener("submit", handleProfileFormSubmit);
+  }
+
+  // Close buttons for all modals
   const closeBtns = document.querySelectorAll(".modal__close-btn");
   closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => closeModal(btn.closest(".modal")));
