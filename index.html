@@ -53,11 +53,13 @@
         </div>
       </li>
     </template>
+
+    <!-- Edit Profile Modal -->
     <div class="modal modal_type_edit-profile" id="edit-profile-modal">
       <div class="modal__container">
         <button type="button" class="modal__close-btn button"></button>
         <h2 class="modal__title">Edit Profile</h2>
-        <form name="edit-profile" class="modal__form">
+        <form id="edit-profile-form" name="edit-profile" class="modal__form">
           <label for="name" class="modal__label">
             Name
             <input
@@ -82,11 +84,13 @@
         </form>
       </div>
     </div>
+
+    <!-- New Post Modal -->
     <div class="modal modal_type_new-post" id="new-post-modal">
       <div class="modal__container">
         <button type="button" class="modal__close-btn button"></button>
         <h2 class="modal__title">New post</h2>
-        <form name="new-post" class="modal__form">
+        <form id="new-post-form" name="new-post" class="modal__form">
           <label for="image_url" class="modal__label">
             Image link
             <input
@@ -111,8 +115,10 @@
         </form>
       </div>
     </div>
+
+    <!-- Preview Modal -->
     <div class="modal" id="preview-modal">
-      <div class="modal_content modal__content-preview">
+      <div class="modal__content modal__content-preview">
         <button
           type="button"
           class="modal__close-btn modal__close-preview"
@@ -123,6 +129,7 @@
         </figure>
       </div>
     </div>
+
     <script defer src="./scripts/index.js"></script>
   </body>
 </html>
