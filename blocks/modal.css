@@ -163,6 +163,10 @@
     right: 12px;
   }
 
+  .modal__close-btn:hover {
+    background-image: url(../images/closewhite.svg);
+  }
+
   .modal__label {
     margin-bottom: 24px;
   }
