@@ -1,3 +1,16 @@
+const cardList = document.querySelector(".cards__list");
+const cardTemplate = document.querySelector("#card-template");
+const previewModal = document.querySelector("#preview-modal");
+const modalFigure = previewModal?.querySelector(".modal__figure");
+const modalImage = modalFigure?.querySelector(".modal__image");
+const modalCaption = modalFigure?.querySelector(".modal__caption");
+const nameInput = document.querySelector("#name");
+const jobInput = document.querySelector("#description");
+const profileNameElement = document.querySelector(".profile__name");
+const profileJobElement = document.querySelector(".profile__description");
+const editProfileModal = document.querySelector("#edit-profile-modal");
+const newPostModal = document.querySelector("#new-post-modal");
+
 const initialCards = [
   {
     name: "Val Thorens",
@@ -24,17 +37,6 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
   },
 ];
-
-const cardList = document.querySelector(".cards__list");
-const cardTemplate = document.querySelector("#card-template");
-const previewModal = document.querySelector("#preview-modal");
-const modalFigure = previewModal?.querySelector(".modal__figure");
-const modalImage = modalFigure?.querySelector(".modal__image");
-const modalCaption = modalFigure?.querySelector(".modal__caption");
-const nameInput = document.querySelector("#name");
-const jobInput = document.querySelector("#description");
-const profileNameElement = document.querySelector(".profile__name");
-const profileJobElement = document.querySelector(".profile__description");
 
 function getCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
@@ -109,7 +111,7 @@ function openModal(modal) {
 function addNewCard(name, link) {
   if (name && link) {
     const newCardData = { name, link };
-    renderCard(newCardData, "prepend");
+    renderCard(newCardData);
   }
 }
 
@@ -118,11 +120,42 @@ function populateProfileForm() {
   jobInput.value = profileJobElement.textContent;
 }
 
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const modal = form.closest(".modal");
+  form.reset();
+  if (modal) closePopup(modal);
+}
+
+function handleProfileFormSubmit(evt) {
+  const name = nameInput.value.trim();
+  const job = jobInput.value.trim();
+  if (name && job) {
+    profileNameElement.textContent = name;
+    profileJobElement.textContent = job;
+  }
+  handleSubmit(evt);
+}
+
+function handleCardFormSubmit(evt) {
+  const imageUrlInput = document.querySelector("#image_url");
+  const captionInput = document.querySelector("#new-post-caption-input");
+
+  if (imageUrlInput && captionInput) {
+    const imageUrl = imageUrlInput.value.trim();
+    const caption = captionInput.value.trim();
+
+    if (imageUrl && caption) {
+      addNewCard(caption, imageUrl);
+    }
+  }
+
+  handleSubmit(evt);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderCards();
-
-  const editProfileModal = document.querySelector("#edit-profile-modal");
-  const newPostModal = document.querySelector("#new-post-modal");
 
   document.querySelector(".profile__edit-btn").addEventListener("click", () => {
     populateProfileForm();
@@ -133,40 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelector(".profile__add-btn")
     .addEventListener("click", () => openModal(newPostModal));
 
-  const forms = document.forms;
-  Array.from(forms).forEach((form) => {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const formId = form.id;
-      const modal = form.closest(".modal");
-
-      if (formId === "edit-profile-form") {
-        const name = nameInput.value.trim();
-        const job = jobInput.value.trim();
-        if (name && job) {
-          profileNameElement.textContent = name;
-          profileJobElement.textContent = job;
-        }
-      } else if (formId === "new-post-form") {
-        const imageUrlInput = document.querySelector("#image_url");
-        const captionInput = document.querySelector("#new-post-caption-input");
-
-        if (imageUrlInput && captionInput) {
-          const imageUrl = imageUrlInput.value.trim();
-          const caption = captionInput.value.trim();
-
-          if (imageUrl && caption) {
-            addNewCard(caption, imageUrl);
-          }
-        }
-      }
-
-      form.reset();
-
-      if (modal) closePopup(modal);
-    });
-  });
+  document
+    .querySelector("#edit-profile-form")
+    .addEventListener("submit", handleProfileFormSubmit);
+  document
+    .querySelector("#new-post-form")
+    .addEventListener("submit", handleCardFormSubmit);
 
   const closeBtns = document.querySelectorAll(".modal__close-btn");
   closeBtns.forEach((btn) => {
