@@ -15,6 +15,7 @@
 .card__content {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .card__title {
@@ -30,15 +31,19 @@
   color: #212121;
 }
 
-.card__like-btn {
-  background-image: url(../images/heart.svg);
+.card__like-btn,
+.card__like-btn_liked {
   background-repeat: no-repeat;
-  height: 20px;
-  width: 23px;
   border: none;
   background-color: transparent;
-  opacity: 40%;
   cursor: pointer;
+  height: 20px;
+  width: 23px;
+}
+
+.card__like-btn {
+  background-image: url(../images/heart.svg);
+  opacity: 40%;
 }
 
 .card__like-btn:hover {
@@ -47,13 +52,11 @@
 
 .card__like-btn_liked {
   background-image: url(../images/liked.svg);
-  background-repeat: no-repeat;
   opacity: 1;
 }
 
 .card__like-btn_liked:hover {
   background-image: url(../images/likedhover.svg);
-  background-repeat: no-repeat;
 }
 
 .card__delete-btn {
@@ -90,10 +93,6 @@
   .card__like-btn {
     width: 20px;
     height: 18px;
-  }
-
-  .card__content {
-    width: 100%;
   }
 }
 
