@@ -96,3 +96,12 @@
     width: 100%;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .card__delete-btn {
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+  }
+}

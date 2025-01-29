@@ -31,7 +31,6 @@ const previewModal = document.querySelector("#preview-modal");
 const modalFigure = previewModal?.querySelector(".modal__figure");
 const modalImage = modalFigure?.querySelector(".modal__image");
 const modalCaption = modalFigure?.querySelector(".modal__caption");
-
 const nameInput = document.querySelector("#name");
 const jobInput = document.querySelector("#description");
 const profileNameElement = document.querySelector(".profile__name");
@@ -159,11 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (imageUrl && caption) {
             addNewCard(caption, imageUrl);
-            imageUrlInput.value = "";
-            captionInput.value = "";
           }
         }
       }
+
+      form.reset();
 
       if (modal) closePopup(modal);
     });
