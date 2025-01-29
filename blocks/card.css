@@ -98,10 +98,44 @@
 }
 
 @media screen and (max-width: 320px) {
-  .card__delete-btn {
-    top: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
+  .card__image-container {
+    position: relative;
+
+    .card__image {
+      width: 240px;
+      height: 240px;
+      margin: 20px auto 12px;
+    }
+
+    .card__delete-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      background-size: cover;
+    }
+
+    .card__content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+    }
+
+    .card__title {
+      font-size: 14px;
+      line-height: 1.2;
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card__like-btn {
+      width: 16px;
+      height: 14px;
+      margin-left: auto;
+    }
   }
 }
