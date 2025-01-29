@@ -43,10 +43,8 @@
     </footer>
     <template id="card-template">
       <li class="card">
-        <div class="card__image-container">
-          <img src="" alt="" class="card__image" />
-          <button type="button" class="card__delete-btn button"></button>
-        </div>
+        <img src="" alt="" class="card__image" />
+        <button type="button" class="card__delete-btn button"></button>
         <div class="card__content">
           <h2 class="card__title"></h2>
           <button type="button" class="card__like-btn button"></button>
@@ -57,7 +55,7 @@
     <!-- Edit Profile Modal -->
     <div class="modal modal_type_edit-profile" id="edit-profile-modal">
       <div class="modal__container">
-        <button type="button" class="modal__close-btn button"></button>
+        <button type="button" class="modal__close-btn"></button>
         <h2 class="modal__title">Edit Profile</h2>
         <form id="edit-profile-form" name="edit-profile" class="modal__form">
           <label for="name" class="modal__label">
@@ -118,7 +116,7 @@
 
     <!-- Preview Modal -->
     <div class="modal" id="preview-modal">
-      <div class="modal__content modal__content--preview">
+      <div class="modal__content modal__content-preview">
         <button
           type="button"
           class="modal__close-btn modal__close-preview"
