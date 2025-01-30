@@ -8,7 +8,6 @@
   object-fit: cover;
   display: block;
   border-radius: 8px;
-  margin-bottom: 12px;
 }
 
 .card__content {
@@ -106,7 +105,6 @@
   .card__image {
     width: 288px;
     height: 240px;
-    margin: 0;
   }
 
   .card__delete-btn {
@@ -117,25 +115,25 @@
   }
 
   .card__content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-direction: row;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
 
-    .card__title {
-      font-size: 14px;
-      line-height: 1.2;
-      max-width: 180px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .card__title {
+    font-size: 14px;
+    line-height: 1.2;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 12px;
+  }
 
-    .card__like-btn {
-      width: 16px;
-      height: 14px;
-      margin-left: auto;
-    }
+  .card__like-btn {
+    width: 16px;
+    height: 14px;
+    margin-left: auto;
   }
 }
