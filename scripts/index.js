@@ -16,12 +16,14 @@ const profileEditBtn = document.querySelector(".profile__edit-btn");
 const profileAddBtn = document.querySelector(".profile__add-btn");
 const editProfileForm = document.querySelector("#edit-profile-form");
 const newPostForm = document.querySelector("#new-post-form");
-const closeBtns = document.querySelectorAll(".modal__close-btn");
+const closeBtns = document.querySelectorAll(
+  ".modal__close-btn, .modal__close-preview"
+);
 
 const initialCards = [
   {
     name: "Val Thorens",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg",
+    link: "  https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
   },
   {
     name: "Restaurant terrace",
