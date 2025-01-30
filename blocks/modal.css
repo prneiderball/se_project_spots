@@ -127,7 +127,7 @@
   width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .modal__caption {
@@ -149,7 +149,7 @@
 
   .modal__image {
     max-width: unset;
-    width: 100%;
+    width: 85%;
     margin: 0 16px 0 16px;
   }
 
@@ -159,8 +159,8 @@
   }
 
   .modal__close-btn {
-    top: 12px;
-    right: 12px;
+    top: -40px;
+    right: 20px;
   }
 
   .modal__close-btn:hover {
