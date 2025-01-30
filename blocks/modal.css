@@ -150,7 +150,7 @@
   .modal__image {
     max-width: unset;
     width: 85%;
-    margin: 0 16px 0 16px;
+    margin: 0;
   }
 
   .modal__title {
@@ -160,7 +160,7 @@
 
   .modal__close-btn {
     top: -40px;
-    right: 20px;
+    right: 0px;
   }
 
   .modal__close-btn:hover {
