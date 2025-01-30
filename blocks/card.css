@@ -104,9 +104,9 @@
 
 @media screen and (max-width: 320px) {
   .card__image {
-    width: 240px;
+    width: 288px;
     height: 240px;
-    margin: 20px 16px 12px;
+    margin: 0;
   }
 
   .card__delete-btn {

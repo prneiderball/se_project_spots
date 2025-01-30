@@ -150,7 +150,7 @@
 
   .modal__image {
     max-width: unset;
-    width: 85%;
+    width: 100%;
     margin: 0;
   }
 
