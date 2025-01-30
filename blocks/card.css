@@ -114,8 +114,9 @@
     height: 24px;
     top: 30px;
     right: 25px;
+  }
 
-    .card__content {
+  .card__content {
       display: flex;
       justify-content: space-between;
       align-items: center;
