@@ -86,9 +86,19 @@
   border: 1px solid #21212166;
 }
 
+.modal__input::placeholder {
+  color: #212121;
+  opacity: 30%;
+}
+
 .modal__input:hover {
   border: 1px solid #212121;
   opacity: 1;
+}
+
+.modal__error {
+  display: block;
+  color: red;
 }
 
 .modal__submit-btn {
