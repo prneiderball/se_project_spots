@@ -131,7 +131,7 @@
 }
 
 .button--inactive:hover {
-  background: #212121cc;
+  opacity: 80%;
 }
 
 .modal__type-image {
