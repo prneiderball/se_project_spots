@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------------ Modal Handling ------------------------ //
 
   const openModal = (modal) => modal.classList.add("modal--opened");
-
   const closeModal = (modal) => modal.classList.remove("modal--opened");
 
   const handleOverlayClick = (event) => {
@@ -21,27 +20,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --------------------- Form Validation Logic --------------------- //
 
-  const showInputError = (inputElement, errorMessage) => {
-    const errorElement =
-      inputElement.parentElement.querySelector(".modal__error");
-    inputElement.classList.add("modal__input--error");
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add("modal__error--active");
+  const showInputError = (formElement, inputElement, errorMessage) => {
+    let errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+    if (!errorElement) {
+      errorElement = inputElement.parentElement.querySelector(".modal__error");
+    }
+
+    if (errorElement) {
+      inputElement.classList.add("modal__input--error");
+      errorElement.textContent = errorMessage;
+      errorElement.classList.add("modal__error--active");
+    }
   };
 
-  const hideInputError = (inputElement) => {
-    const errorElement =
-      inputElement.parentElement.querySelector(".modal__error");
-    inputElement.classList.remove("modal__input--error");
-    errorElement.textContent = "";
-    errorElement.classList.remove("modal__error--active");
+  const hideInputError = (formElement, inputElement) => {
+    let errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+    if (!errorElement) {
+      errorElement = inputElement.parentElement.querySelector(".modal__error");
+    }
+
+    if (errorElement) {
+      inputElement.classList.remove("modal__input--error");
+      errorElement.textContent = "";
+      errorElement.classList.remove("modal__error--active");
+    }
   };
 
-  const checkInputValidity = (inputElement) => {
+  const checkInputValidity = (formElement, inputElement) => {
     if (!inputElement.validity.valid) {
-      showInputError(inputElement, inputElement.validationMessage);
+      showInputError(formElement, inputElement, inputElement.validationMessage);
     } else {
-      hideInputError(inputElement);
+      hideInputError(formElement, inputElement);
     }
   };
 
@@ -49,34 +60,44 @@ document.addEventListener("DOMContentLoaded", () => {
     inputList.some((input) => !input.validity.valid);
 
   const toggleButtonState = (inputList, buttonElement) => {
-    buttonElement.classList.toggle(
-      "button--inactive",
-      hasInvalidInput(inputList)
-    );
+    if (hasInvalidInput(inputList)) {
+      buttonElement.classList.add("button--inactive");
+    } else {
+      buttonElement.classList.remove("button--inactive");
+    }
   };
 
-  const setupFormValidation = () => {
-    const forms = document.querySelectorAll("form");
+  const setEventListeners = (formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll("input"));
+    const submitButton = formElement.querySelector(".modal__submit-btn");
 
-    forms.forEach((formElement) => {
-      const inputList = Array.from(formElement.querySelectorAll("input"));
-      const submitButton = formElement.querySelector(".modal__submit-btn");
+    toggleButtonState(inputList, submitButton);
 
-      inputList.forEach((inputElement) => {
-        inputElement.addEventListener("input", () => {
-          checkInputValidity(inputElement);
-          toggleButtonState(inputList, submitButton);
-        });
-      });
-
-      toggleButtonState(inputList, submitButton);
-
-      formElement.addEventListener("submit", (event) => {
-        event.preventDefault();
-        console.log(`Form "${formElement.getAttribute("name")}" submitted.`);
+    inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        checkInputValidity(formElement, inputElement);
+        toggleButtonState(inputList, submitButton);
       });
     });
   };
 
-  setupFormValidation();
+  const enableValidation = () => {
+    const forms = document.querySelectorAll("form");
+
+    forms.forEach((formElement) => {
+      formElement.addEventListener("submit", (event) => {
+        event.preventDefault();
+        console.log(`Form "${formElement.getAttribute("name")}" submitted.`);
+      });
+
+      const fieldsetList = formElement.querySelectorAll(".form__set");
+      if (fieldsetList.length > 0) {
+        fieldsetList.forEach((fieldset) => setEventListeners(fieldset));
+      } else {
+        setEventListeners(formElement);
+      }
+    });
+  };
+
+  enableValidation();
 });
