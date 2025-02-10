@@ -55,7 +55,7 @@
     </template>
 
     <!-- Edit Profile Modal -->
-    <div class="modal modal_type_edit-profile" id="edit-profile-modal">
+    <div class="modal modal--edit-profile" id="edit-profile-modal">
       <div class="modal__container">
         <button type="button" class="modal__close-btn"></button>
         <h2 class="modal__title">Edit Profile</h2>
@@ -71,7 +71,7 @@
               maxlength="40"
               required
             />
-            <span class="modal__error">Error!</span>
+            <span class="modal__error"></span>
           </label>
           <label for="description" class="modal__label">
             Description
@@ -84,7 +84,7 @@
               maxlength="200"
               required
             />
-            <span class="modal__error">Error!</span>
+            <span class="modal__error"></span>
           </label>
           <button type="submit" class="modal__submit-btn button">Save</button>
         </form>
@@ -92,10 +92,10 @@
     </div>
 
     <!-- New Post Modal -->
-    <div class="modal modal_type_new-post" id="new-post-modal">
+    <div class="modal modal--new-post" id="new-post-modal">
       <div class="modal__container">
         <button type="button" class="modal__close-btn button"></button>
-        <h2 class="modal__title">New post</h2>
+        <h2 class="modal__title">New Post</h2>
         <form id="new-post-form" name="new-post" class="modal__form">
           <label for="image_url" class="modal__label">
             Image link
@@ -107,7 +107,7 @@
               pattern="https://.*"
               required
             />
-            <span class="modal__error">Error!</span>
+            <span class="modal__error"></span>
           </label>
           <label for="new-post-caption-input" class="modal__label">
             Caption
@@ -120,7 +120,7 @@
               maxlength="30"
               required
             />
-            <span class="modal__error">Error!</span>
+            <span class="modal__error"></span>
           </label>
           <button type="submit" class="modal__submit-btn button">Save</button>
         </form>
@@ -129,7 +129,7 @@
 
     <!-- Preview Modal -->
     <div class="modal" id="preview-modal">
-      <div class="modal__content modal__content-preview">
+      <div class="modal__content modal__content--preview">
         <button type="button" class="modal__close-preview"></button>
         <figure class="modal__figure">
           <img src="#" alt="#" class="modal__image" />
@@ -137,7 +137,7 @@
         </figure>
       </div>
     </div>
-
+    <script defer src="./scripts/validation.js"></script>
     <script defer src="./scripts/index.js"></script>
   </body>
 </html>

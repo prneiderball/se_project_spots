@@ -15,7 +15,7 @@
   transition: visibility 0.3s, opacity 0.3s ease-in;
 }
 
-.modal_opened {
+.modal--opened {
   opacity: 1;
   visibility: visible;
 }
@@ -86,6 +86,10 @@
   border: 1px solid #21212166;
 }
 
+.modal__input--error {
+  border: 1px solid #ff000099;
+}
+
 .modal__input::placeholder {
   color: #212121;
   opacity: 30%;
@@ -93,12 +97,19 @@
 
 .modal__input:hover {
   border: 1px solid #212121;
-  opacity: 1;
 }
 
 .modal__error {
+  display: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17.6px;
+  color: #f00;
+  opacity: 70%;
+}
+
+.modal__error--active {
   display: block;
-  color: red;
 }
 
 .modal__submit-btn {
@@ -114,7 +125,16 @@
   transition: background 0.03s;
 }
 
-.modal__type_image {
+.button--inactive {
+  opacity: 50%;
+  cursor: default;
+}
+
+.button--inactive:hover {
+  background: #212121cc;
+}
+
+.modal__type-image {
   max-width: 100%;
   max-height: 80vh;
 }

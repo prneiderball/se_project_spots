@@ -45,13 +45,13 @@
   opacity: 1;
 }
 
-.card__like-btn_liked {
+.card__like-btn--liked {
   background-image: url(../images/liked.svg);
   background-repeat: no-repeat;
   opacity: 1;
 }
 
-.card__like-btn_liked:hover {
+.card__like-btn--liked:hover {
   background-image: url(../images/likedhover.svg);
   background-repeat: no-repeat;
 }
@@ -92,6 +92,7 @@
     width: 20px;
     height: 18px;
   }
+
   .card__delete-btn {
     top: 10px;
     right: 25px;

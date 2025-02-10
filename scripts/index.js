@@ -23,7 +23,7 @@ const closeBtns = document.querySelectorAll(
 const initialCards = [
   {
     name: "Val Thorens",
-    link: "  https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
   },
   {
     name: "Restaurant terrace",
@@ -59,7 +59,7 @@ function getCardElement(data) {
   cardTitle.textContent = data.name;
 
   cardLikedBtn.addEventListener("click", () => {
-    cardLikedBtn.classList.toggle("card__like-btn_liked");
+    cardLikedBtn.classList.toggle("card__like-btn--liked");
   });
 
   cardImage.addEventListener("click", () =>
@@ -79,20 +79,18 @@ function openImageModal(imageUrl, imageCaption) {
     console.error("Modal or its components not found");
     return;
   }
-
   modalImage.src = imageUrl;
   modalImage.alt = imageCaption;
   modalCaption.textContent = imageCaption;
-
   openPopup(previewModal);
 }
 
 function openPopup(popup) {
-  popup.classList.add("modal_opened");
+  popup.classList.add("modal--opened");
 }
 
 function closePopup(popup) {
-  popup.classList.remove("modal_opened");
+  popup.classList.remove("modal--opened");
 }
 
 function handleClickOutsideModal(e) {
@@ -103,7 +101,6 @@ function handleClickOutsideModal(e) {
 
 function renderCard(item, method = "prepend") {
   const cardElement = getCardElement(item);
-
   if (method === "prepend") {
     cardList.prepend(cardElement);
   } else {
@@ -156,28 +153,22 @@ function handleCardFormSubmit(evt) {
   if (imageUrlInput && captionInput) {
     const imageUrl = imageUrlInput.value.trim();
     const caption = captionInput.value.trim();
-
     if (imageUrl && caption) {
       addNewCard(caption, imageUrl);
     }
   }
-
   handleSubmit(evt);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   renderCards();
-
   profileEditBtn.addEventListener("click", () => {
     populateProfileForm();
     openModal(editProfileModal);
   });
-
   profileAddBtn.addEventListener("click", () => openModal(newPostModal));
-
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
   newPostForm.addEventListener("submit", handleCardFormSubmit);
-
   closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => closePopup(btn.closest(".modal")));
   });
