@@ -1,6 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Initializing form validation...");
 
+  // ------------------------ Error Handling Functions ------------------------ //
+
+  const showInputError = (formElement, inputElement, errorMessage) => {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.add("modal__input--error");
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add("modal__error--active");
+  };
+
+  const hideInputError = (formElement, inputElement) => {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.remove("modal__input--error");
+    errorElement.textContent = "";
+    errorElement.classList.remove("modal__error--active");
+  };
+
+  const checkInputValidity = (formElement, inputElement) => {
+    if (!inputElement.validity.valid) {
+      showInputError(formElement, inputElement, inputElement.validationMessage);
+    } else {
+      hideInputError(formElement, inputElement);
+    }
+  };
+
   // ------------------------ Form Validation ------------------------ //
 
   const hasInvalidInput = (inputList) =>
@@ -15,11 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hasInvalidInput(inputList)) {
       console.log("Disabling button, invalid inputs present.");
-      buttonElement.classList.add("button--inactive");
+      buttonElement.classList.add("modal__submit-btn--disabled");
       buttonElement.setAttribute("disabled", true);
     } else {
       console.log("Enabling button, all inputs valid.");
-      buttonElement.classList.remove("button--inactive");
+      buttonElement.classList.remove("modal__submit-btn--disabled");
       buttonElement.removeAttribute("disabled");
     }
   };
@@ -30,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
+        checkInputValidity(formElement, inputElement);
+
         toggleButtonState(inputList, submitButton);
       });
     });
@@ -57,11 +83,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const formElement = modalElement.querySelector("form");
     if (formElement) {
       const inputList = Array.from(
-        formElement.querySelectorAll(".form__input")
+        formElement.querySelectorAll(".modal__input")
       );
-      const buttonElement = formElement.querySelector(".modal__submit-btn");
+      const submitButton = formElement.querySelector(".modal__submit-btn");
 
-      toggleButtonState(inputList, buttonElement);
+      inputList.forEach((inputElement) => {
+        hideInputError(formElement, inputElement);
+      });
+
+      toggleButtonState(inputList, submitButton);
     }
 
     modalElement.classList.add("modal--opened");
