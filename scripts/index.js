@@ -129,6 +129,16 @@ function renderCards() {
 function openModal(modal) {
   openPopup(modal);
   modal.addEventListener("click", handleClickOutsideModal);
+
+  if (modal === editProfileModal) {
+    const inputList = Array.from(modal.querySelectorAll(".modal__input"));
+    inputList.forEach((input) => {
+      hideInputError(modal, input, window.validationSettings);
+    });
+
+    const submitButton = modal.querySelector(".modal__submit-btn");
+    toggleButtonState(inputList, submitButton, window.validationSettings);
+  }
 }
 
 function addNewCard(name, link) {
@@ -153,7 +163,7 @@ function handleSubmit(e) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  if (!validateForm(editProfileForm, window.validationSettings)) return;
+  if (!window.validateForm(editProfileForm, window.validationSettings)) return;
   const name = nameInput.value.trim();
   const job = jobInput.value.trim();
   if (name && job) {
@@ -165,13 +175,11 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  if (!validateForm(newPostForm, window.validationSettings)) return;
-  if (imageUrlInput && captionInput) {
-    const imageUrl = imageUrlInput.value.trim();
-    const caption = captionInput.value.trim();
-    if (imageUrl && caption) {
-      addNewCard(caption, imageUrl);
-    }
+  if (!window.validateForm(newPostForm, window.validationSettings)) return;
+  const imageUrl = imageUrlInput.value.trim();
+  const caption = captionInput.value.trim();
+  if (imageUrl && caption) {
+    addNewCard(caption, imageUrl);
   }
   handleSubmit(evt);
 }

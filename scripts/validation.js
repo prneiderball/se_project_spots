@@ -69,6 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleButtonState(inputList, submitButton, config);
       });
     });
+
+    inputList.forEach((inputElement) => {
+      checkInputValidity(formElement, inputElement, config);
+    });
   };
 
   const enableValidation = (config) => {
@@ -78,9 +82,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const validateForm = (formElement, config) => {
+    const inputList = Array.from(
+      formElement.querySelectorAll(config.inputSelector)
+    );
+    let isValid = true;
+
+    inputList.forEach((inputElement) => {
+      checkInputValidity(formElement, inputElement, config);
+      if (!inputElement.validity.valid) {
+        isValid = false;
+      }
+    });
+
+    const submitButton = formElement.querySelector(config.submitButtonSelector);
+    toggleButtonState(inputList, submitButton, config);
+
+    return isValid;
+  };
+
   enableValidation(settings);
 
   window.validationSettings = settings;
+  window.validateForm = validateForm;
   window.hideInputError = hideInputError;
   window.toggleButtonState = toggleButtonState;
 });

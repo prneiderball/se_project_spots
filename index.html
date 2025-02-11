@@ -111,7 +111,7 @@
               pattern="https://.*"
               required
             />
-            <span id="url-error" class="modal__error"></span>
+            <span id="image_url-error" class="modal__error"></span>
           </label>
           <label for="new-post-caption-input" class="modal__label">
             Caption
@@ -124,9 +124,13 @@
               maxlength="30"
               required
             />
-            <span id="caption-error" class="modal__error"></span>
+            <span id="new-post-caption-input-error" class="modal__error"></span>
           </label>
-          <button type="submit" class="modal__submit-btn button" disabled>
+          <button
+            type="submit"
+            class="modal__submit-btn button modal__submit-btn--disabled"
+            disabled
+          >
             Save
           </button>
         </form>

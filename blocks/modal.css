@@ -54,7 +54,7 @@
 
 .modal__close-preview {
   background-image: url(../images/closewhite.svg);
-  top: 0;
+  top: -10px;
   right: -52.5px;
   z-index: 1001;
 }
