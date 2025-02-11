@@ -27,12 +27,13 @@ Spots addresses the need for a simple yet effective way to present visual conten
 ## Tech Stack
 
 - **HTML5:** Semantic markup for structure and accessibility.
-- **CSS3:** Styling using the BEM methodology, grid layout, and media queries for responsive design.
+- **CSS3:** Styling using the BEM methodology, grid-style layout, and media queries for responsive design.
 - **JavaScript (ES6+):** Dynamic content rendering, modal interactions, and universal form validation.
 
 ## Demo
 
 - **Live Project:** [Spots - GitHub Pages](https://prneiderball.github.io/se_project_spots/)
+
 - **Explanation Video:** [View Project Video](https://drive.google.com/file/d/1bv-_z_MxtcVmtyQ65WCxZc-cLwJTaFsD/view?usp=sharing)
 
 ## How to Use
@@ -50,7 +51,7 @@ Spots addresses the need for a simple yet effective way to present visual conten
 
 ## Credits
 
-Developed by [Your Name or GitHub Username].
+Developed by P.R. Neider-Ball
 
 ## License
 
