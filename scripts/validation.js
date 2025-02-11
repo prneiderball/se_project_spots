@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const showInputError = (formElement, inputElement, errorMessage) => {
     const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    if (!errorElement) return;
     inputElement.classList.add("modal__input--error");
     errorElement.textContent = errorMessage;
     errorElement.classList.add("modal__error--active");
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const hideInputError = (formElement, inputElement) => {
     const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    if (!errorElement) return;
     inputElement.classList.remove("modal__input--error");
     errorElement.textContent = "";
     errorElement.classList.remove("modal__error--active");
@@ -55,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         checkInputValidity(formElement, inputElement);
-
         toggleButtonState(inputList, submitButton);
       });
     });
@@ -90,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
       inputList.forEach((inputElement) => {
         hideInputError(formElement, inputElement);
       });
-
       toggleButtonState(inputList, submitButton);
     }
 
@@ -102,6 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(`Closing modal: ${modalElement.id}`);
     modalElement.classList.remove("modal--opened");
   };
+
+  // ------------------------ Event Listeners for Modals ------------------------ //
 
   document.querySelectorAll("[data-open-modal]").forEach((button) => {
     button.addEventListener("click", (event) => {
