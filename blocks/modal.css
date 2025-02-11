@@ -131,6 +131,7 @@
 }
 
 .modal__submit-btn--disabled:hover {
+  transition: 0.3s;
   opacity: 80%;
 }
 

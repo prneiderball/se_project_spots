@@ -88,13 +88,11 @@ function openImageModal(imageUrl, imageCaption) {
 
 function openPopup(popup) {
   popup.classList.add("modal--opened");
-
   document.addEventListener("keydown", handleEscKey);
 }
 
 function closePopup(popup) {
   popup.classList.remove("modal--opened");
-
   document.removeEventListener("keydown", handleEscKey);
 }
 
@@ -154,6 +152,8 @@ function handleSubmit(e) {
 }
 
 function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+  if (!validateForm(editProfileForm, window.validationSettings)) return;
   const name = nameInput.value.trim();
   const job = jobInput.value.trim();
   if (name && job) {
@@ -164,6 +164,8 @@ function handleProfileFormSubmit(evt) {
 }
 
 function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  if (!validateForm(newPostForm, window.validationSettings)) return;
   if (imageUrlInput && captionInput) {
     const imageUrl = imageUrlInput.value.trim();
     const caption = captionInput.value.trim();
