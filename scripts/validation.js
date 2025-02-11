@@ -1,122 +1,87 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Initializing form validation...");
 
-  // ------------------------ Error Handling Functions ------------------------ //
+  // ------------------------ Configuration Object ------------------------ //
+  const settings = {
+    formSelector: ".modal__form",
+    inputSelector: ".modal__input",
+    submitButtonSelector: ".modal__submit-btn",
+    inactiveButtonClass: "modal__submit-btn--disabled",
+    inputErrorClass: "modal__input_type_error",
+    errorClass: "modal__error_visible",
+  };
 
-  const showInputError = (formElement, inputElement, errorMessage) => {
-    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  // ------------------------ Error Handling Functions ----------------------//
+  const showInputError = (formElement, inputElement, errorMessage, config) => {
+    const errorElement =
+      inputElement.parentElement.querySelector(".modal__error");
     if (!errorElement) return;
-    inputElement.classList.add("modal__input--error");
+    inputElement.classList.add(config.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add("modal__error--active");
+    errorElement.classList.add(config.errorClass);
   };
 
-  const hideInputError = (formElement, inputElement) => {
-    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  const hideInputError = (formElement, inputElement, config) => {
+    const errorElement =
+      inputElement.parentElement.querySelector(".modal__error");
     if (!errorElement) return;
-    inputElement.classList.remove("modal__input--error");
+    inputElement.classList.remove(config.inputErrorClass);
     errorElement.textContent = "";
-    errorElement.classList.remove("modal__error--active");
+    errorElement.classList.remove(config.errorClass);
   };
 
-  const checkInputValidity = (formElement, inputElement) => {
+  const checkInputValidity = (formElement, inputElement, config) => {
     if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage);
+      showInputError(
+        formElement,
+        inputElement,
+        inputElement.validationMessage,
+        config
+      );
     } else {
-      hideInputError(formElement, inputElement);
+      hideInputError(formElement, inputElement, config);
     }
   };
 
-  // ------------------------ Form Validation ------------------------ //
+  // ------------------------ Form Validation Functions ------------------------ //
 
   const hasInvalidInput = (inputList) =>
     inputList.some((input) => !input.validity.valid);
 
-  const toggleButtonState = (inputList, buttonElement) => {
-    console.log("Toggling button state...");
-    console.log(
-      "Current input values:",
-      inputList.map((input) => input.value)
-    );
-
+  const toggleButtonState = (inputList, buttonElement, config) => {
     if (hasInvalidInput(inputList)) {
-      console.log("Disabling button, invalid inputs present.");
-      buttonElement.classList.add("modal__submit-btn--disabled");
+      buttonElement.classList.add(config.inactiveButtonClass);
       buttonElement.setAttribute("disabled", true);
     } else {
-      console.log("Enabling button, all inputs valid.");
-      buttonElement.classList.remove("modal__submit-btn--disabled");
+      buttonElement.classList.remove(config.inactiveButtonClass);
       buttonElement.removeAttribute("disabled");
     }
   };
 
-  const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll(".modal__input"));
-    const submitButton = formElement.querySelector(".modal__submit-btn");
+  const setEventListeners = (formElement, config) => {
+    const inputList = Array.from(
+      formElement.querySelectorAll(config.inputSelector)
+    );
+    const submitButton = formElement.querySelector(config.submitButtonSelector);
 
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
-        checkInputValidity(formElement, inputElement);
-        toggleButtonState(inputList, submitButton);
+        checkInputValidity(formElement, inputElement, config);
+        toggleButtonState(inputList, submitButton, config);
       });
     });
-
-    console.log(
-      `Set up validation for form: ${formElement.getAttribute("name")}`
-    );
   };
 
-  const enableValidation = () => {
-    document.querySelectorAll("form").forEach((formElement) => {
-      setEventListeners(formElement);
+  const enableValidation = (config) => {
+    const forms = document.querySelectorAll(config.formSelector);
+    forms.forEach((formElement) => {
+      setEventListeners(formElement, config);
     });
   };
 
-  enableValidation();
+  enableValidation(settings);
 
-  // ------------------------ Modal Handling ------------------------ //
-
-  const openModal = (modalElement) => {
-    if (!modalElement) return;
-
-    console.log(`Opening modal: ${modalElement.id}`);
-
-    const formElement = modalElement.querySelector("form");
-    if (formElement) {
-      const inputList = Array.from(
-        formElement.querySelectorAll(".modal__input")
-      );
-      const submitButton = formElement.querySelector(".modal__submit-btn");
-
-      inputList.forEach((inputElement) => {
-        hideInputError(formElement, inputElement);
-      });
-      toggleButtonState(inputList, submitButton);
-    }
-
-    modalElement.classList.add("modal--opened");
-  };
-
-  const closeModal = (modalElement) => {
-    if (!modalElement) return;
-    console.log(`Closing modal: ${modalElement.id}`);
-    modalElement.classList.remove("modal--opened");
-  };
-
-  // ------------------------ Event Listeners for Modals ------------------------ //
-
-  document.querySelectorAll("[data-open-modal]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const modalId = event.target.getAttribute("data-open-modal");
-      openModal(document.querySelector(`#${modalId}`));
-    });
-  });
-
-  document.querySelectorAll(".modal").forEach((modal) => {
-    modal.addEventListener("click", (event) => {
-      if (event.target.classList.contains("modal")) {
-        closeModal(event.target);
-      }
-    });
-  });
+  window.validationSettings = settings;
+  window.hideInputError = hideInputError;
+  window.toggleButtonState = toggleButtonState;
 });
