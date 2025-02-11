@@ -71,7 +71,7 @@
               maxlength="40"
               required
             />
-            <span class="modal__error"></span>
+            <span id="name-error" class="modal__error"></span>
           </label>
           <label for="description" class="modal__label">
             Description
@@ -84,7 +84,7 @@
               maxlength="200"
               required
             />
-            <span class="modal__error"></span>
+            <span id="description-error" class="modal__error"></span>
           </label>
           <button type="submit" class="modal__submit-btn button">Save</button>
         </form>
@@ -107,7 +107,7 @@
               pattern="https://.*"
               required
             />
-            <span class="modal__error"></span>
+            <span id="url-error" class="modal__error"></span>
           </label>
           <label for="new-post-caption-input" class="modal__label">
             Caption
@@ -120,7 +120,7 @@
               maxlength="30"
               required
             />
-            <span class="modal__error"></span>
+            <span id="caption-error" class="modal__error"></span>
           </label>
           <button type="submit" class="modal__submit-btn button" disabled>
             Save
