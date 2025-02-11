@@ -218,6 +218,11 @@
 }
 
 @media screen and (max-width: 320px) {
+  .modal__container {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
   .modal__close-btn {
     top: unset;
   }

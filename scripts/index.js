@@ -82,15 +82,29 @@ function openImageModal(imageUrl, imageCaption) {
   modalImage.src = imageUrl;
   modalImage.alt = imageCaption;
   modalCaption.textContent = imageCaption;
-  openPopup(previewModal);
+
+  openModal(previewModal);
 }
 
 function openPopup(popup) {
   popup.classList.add("modal--opened");
+
+  document.addEventListener("keydown", handleEscKey);
 }
 
 function closePopup(popup) {
   popup.classList.remove("modal--opened");
+
+  document.removeEventListener("keydown", handleEscKey);
+}
+
+function handleEscKey(event) {
+  if (event.key === "Escape") {
+    const openedModal = document.querySelector(".modal.modal--opened");
+    if (openedModal) {
+      closePopup(openedModal);
+    }
+  }
 }
 
 function handleClickOutsideModal(e) {
