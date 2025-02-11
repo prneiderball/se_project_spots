@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     errorClass: "modal__error_visible",
   };
 
-  // ------------------------ Error Handling Functions ----------------------//
+  // ------------------------ Error Handling Functions ------------------------ //
+
   const showInputError = (formElement, inputElement, errorMessage, config) => {
-    const errorElement =
-      inputElement.parentElement.querySelector(".modal__error");
+    const errorElement = document.querySelector(`#${inputElement.id}-error`);
     if (!errorElement) return;
     inputElement.classList.add(config.inputErrorClass);
     errorElement.textContent = errorMessage;
@@ -22,8 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const hideInputError = (formElement, inputElement, config) => {
-    const errorElement =
-      inputElement.parentElement.querySelector(".modal__error");
+    const errorElement = document.querySelector(`#${inputElement.id}-error`);
     if (!errorElement) return;
     inputElement.classList.remove(config.inputErrorClass);
     errorElement.textContent = "";
