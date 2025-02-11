@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     inputSelector: ".modal__input",
     submitButtonSelector: ".modal__submit-btn",
     inactiveButtonClass: "modal__submit-btn--disabled",
-    inputErrorClass: "modal__input_type_error",
-    errorClass: "modal__error_visible",
+    inputErrorClass: "modal__input--error",
+    errorClass: "modal__error--active",
   };
 
   // ------------------------ Error Handling Functions ------------------------ //
