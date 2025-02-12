@@ -55,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleButtonState(inputList, submitButton, config);
   };
 
-  window.resetValidation = resetValidation;
-
   // ------------------------ Form Validation Functions ------------------------ //
 
   const hasInvalidInput = (inputList) =>
@@ -120,4 +118,5 @@ document.addEventListener("DOMContentLoaded", () => {
   window.validateForm = validateForm;
   window.hideInputError = hideInputError;
   window.toggleButtonState = toggleButtonState;
+  window.resetValidation = resetValidation;
 });
