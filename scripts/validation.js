@@ -42,6 +42,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const resetValidation = (formElement, config) => {
+    const inputList = Array.from(
+      formElement.querySelectorAll(config.inputSelector)
+    );
+    const submitButton = formElement.querySelector(config.submitButtonSelector);
+
+    inputList.forEach((inputElement) => {
+      hideInputError(formElement, inputElement, config);
+    });
+
+    toggleButtonState(inputList, submitButton, config);
+  };
+
+  window.resetValidation = resetValidation;
+
   // ------------------------ Form Validation Functions ------------------------ //
 
   const hasInvalidInput = (inputList) =>
@@ -63,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     const submitButton = formElement.querySelector(config.submitButtonSelector);
 
-    // Set up input event listeners for dynamic validation.
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         checkInputValidity(formElement, inputElement, config);
@@ -71,8 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Instead of looping over each input to validate (and show errors) on load,
-    // just initialize the button state.
     toggleButtonState(inputList, submitButton, config);
   };
 

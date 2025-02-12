@@ -89,6 +89,7 @@ function openImageModal(imageUrl, imageCaption) {
 function openPopup(popup) {
   popup.classList.add("modal--opened");
   document.addEventListener("keydown", handleEscKey);
+  modal.addEventListener("click", handleClickOutsideModal);
 }
 
 function closePopup(popup) {
@@ -126,21 +127,6 @@ function renderCards() {
   });
 }
 
-function openModal(modal) {
-  openPopup(modal);
-  modal.addEventListener("click", handleClickOutsideModal);
-
-  if (modal === editProfileModal) {
-    const inputList = Array.from(modal.querySelectorAll(".modal__input"));
-    inputList.forEach((input) => {
-      hideInputError(modal, input, window.validationSettings);
-    });
-
-    const submitButton = modal.querySelector(".modal__submit-btn");
-    toggleButtonState(inputList, submitButton, window.validationSettings);
-  }
-}
-
 function addNewCard(name, link) {
   if (name && link) {
     const newCardData = { name, link };
@@ -156,14 +142,13 @@ function populateProfileForm() {
 function handleSubmit(e) {
   e.preventDefault();
   const form = e.target;
-  const modal = form.closest(".modal");
   form.reset();
+  window.resetValidation(form, window.validationSettings);
+  const modal = form.closest(".modal");
   if (modal) closePopup(modal);
 }
-
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  if (!window.validateForm(editProfileForm, window.validationSettings)) return;
   const name = nameInput.value.trim();
   const job = jobInput.value.trim();
   if (name && job) {
@@ -175,7 +160,6 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  if (!window.validateForm(newPostForm, window.validationSettings)) return;
   const imageUrl = imageUrlInput.value.trim();
   const caption = captionInput.value.trim();
   if (imageUrl && caption) {
@@ -187,8 +171,8 @@ function handleCardFormSubmit(evt) {
 document.addEventListener("DOMContentLoaded", () => {
   renderCards();
   profileEditBtn.addEventListener("click", () => {
-    populateProfileForm();
-    openModal(editProfileModal);
+    window.resetValidation(editProfileModal, window.validationSettings);
+    openPopup(editProfileModal);
   });
   profileAddBtn.addEventListener("click", () => openModal(newPostModal));
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
