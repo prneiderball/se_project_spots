@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     const submitButton = formElement.querySelector(config.submitButtonSelector);
 
+    // Set up input event listeners for dynamic validation.
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         checkInputValidity(formElement, inputElement, config);
@@ -70,9 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    inputList.forEach((inputElement) => {
-      checkInputValidity(formElement, inputElement, config);
-    });
+    // Instead of looping over each input to validate (and show errors) on load,
+    // just initialize the button state.
+    toggleButtonState(inputList, submitButton, config);
   };
 
   const enableValidation = (config) => {
