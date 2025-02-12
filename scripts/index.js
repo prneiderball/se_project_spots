@@ -53,24 +53,19 @@ function getCardElement(data) {
   const cardTitle = cardElement.querySelector(".card__title");
   const cardLikedBtn = cardElement.querySelector(".card__like-btn");
   const deleteBtn = cardElement.querySelector(".card__delete-btn");
-
   cardImage.src = data.link;
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
-
   cardLikedBtn.addEventListener("click", () => {
     cardLikedBtn.classList.toggle("card__like-btn--liked");
   });
-
   cardImage.addEventListener("click", () =>
     openImageModal(data.link, data.name)
   );
-
   deleteBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     cardElement.remove();
   });
-
   return cardElement;
 }
 
@@ -82,14 +77,13 @@ function openImageModal(imageUrl, imageCaption) {
   modalImage.src = imageUrl;
   modalImage.alt = imageCaption;
   modalCaption.textContent = imageCaption;
-
-  openModal(previewModal);
+  openPopup(previewModal);
 }
 
 function openPopup(popup) {
   popup.classList.add("modal--opened");
   document.addEventListener("keydown", handleEscKey);
-  modal.addEventListener("click", handleClickOutsideModal);
+  popup.addEventListener("click", handleClickOutsideModal);
 }
 
 function closePopup(popup) {
@@ -147,6 +141,7 @@ function handleSubmit(e) {
   const modal = form.closest(".modal");
   if (modal) closePopup(modal);
 }
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const name = nameInput.value.trim();
@@ -174,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.resetValidation(editProfileModal, window.validationSettings);
     openPopup(editProfileModal);
   });
-  profileAddBtn.addEventListener("click", () => openModal(newPostModal));
+  profileAddBtn.addEventListener("click", () => openPopup(newPostModal));
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
   newPostForm.addEventListener("submit", handleCardFormSubmit);
   closeBtns.forEach((btn) => {
