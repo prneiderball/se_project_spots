@@ -172,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     openPopup(editProfileModal);
   });
   profileAddBtn.addEventListener("click", () => {
-    window.resetValidation(newPostForm, window.validationSettings);
     openPopup(newPostModal);
   });
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
