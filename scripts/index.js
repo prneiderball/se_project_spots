@@ -89,6 +89,7 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove("modal--opened");
   document.removeEventListener("keydown", handleEscKey);
+  popup.removeEventListener("click", handleClickOutsideModal);
 }
 
 function handleEscKey(event) {
@@ -166,10 +167,14 @@ function handleCardFormSubmit(evt) {
 document.addEventListener("DOMContentLoaded", () => {
   renderCards();
   profileEditBtn.addEventListener("click", () => {
+    populateProfileForm();
     window.resetValidation(editProfileModal, window.validationSettings);
     openPopup(editProfileModal);
   });
-  profileAddBtn.addEventListener("click", () => openPopup(newPostModal));
+  profileAddBtn.addEventListener("click", () => {
+    window.resetValidation(newPostForm, window.validationSettings);
+    openPopup(newPostModal);
+  });
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
   newPostForm.addEventListener("submit", handleCardFormSubmit);
   closeBtns.forEach((btn) => {
