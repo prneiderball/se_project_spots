@@ -1,4 +1,5 @@
-import { Settings, resetValidation, enableValidation } from "./validation.js";
+import "./index.css";
+import { Settings, resetValidation, enableValidation } from "../validation.js";
 
 const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template");
