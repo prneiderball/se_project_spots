@@ -1,5 +1,5 @@
 import "./index.css";
-import "../vendor/normalize.css";
+import "../vendors/normalize.css";
 import { Settings, resetValidation, enableValidation } from "../validation.js";
 
 const cardList = document.querySelector(".cards__list");
