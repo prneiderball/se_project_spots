@@ -1,5 +1,9 @@
 import "./index.css";
 import { Settings, resetValidation, enableValidation } from "../validation.js";
+import logo from "../images/logo.svg";
+import avatar from "../images/avatar.jpg";
+import pencilIcon from "../images/pencil-icon.svg";
+import plusIcon from "../images/plus.svg";
 
 const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template");
@@ -28,6 +32,17 @@ const initialCards = [
   { name: "Tunnel with morning light", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/5-photo-by-van-anh-nguyen-from-pexels.jpg" },
   { name: "Mountain house", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg" },
 ];
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "46c1a639-4215-418c-8205-87dec37d68b7",
+    "Content-Type": "application/json"
+  }
+});
+
+api.getInitialCards()
+  .then((cards) => {console.log(cards);})/  .catch((err) => console.error("Error fetching initial cards:", err));
 
 function createCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
