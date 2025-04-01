@@ -1,12 +1,13 @@
 class Api {
-    constructor(options) {
-      this.options= options;
+    constructor({baseUrl, headers}) {
+      this._baseUrl = baseUrl;
+      this._headers = headers;
     }
 
     getUserInfo() {
-        return fetch(`${this.options.baseUrl}/users/me`, {
+        return fetch(`${this._baseUrl}/users/me`, {
             headers: {
-                authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
+                authorization: this._headers.authorization
             }
         })
         .then(res => {
@@ -21,9 +22,10 @@ class Api {
     }
 
     getInitialCards() {
-        return fetch(`${this.options.baseUrl}/cards`, { 
+        return fetch(`${this._baseUrl}/cards`, { 
             headers: {
-                authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
+                ...this._headers,
+                authorization: this._headers.authorization
             }
         })
         .then(res => {
@@ -46,7 +48,10 @@ class Api {
     editUserInfo({ name, about }) {
         return fetch(`${this._baseUrl}/users/me`, {
               method: "PATCH",
-              headers: this._headers,
+              headers: {
+                ...this._headers,
+                authorization: this._headers.authorization
+            },
               body: JSON.stringify({
                 name,
                 about,

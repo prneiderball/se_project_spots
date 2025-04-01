@@ -25,6 +25,10 @@ const editProfileForm = document.querySelector("#edit-profile-form");
 const newPostForm = document.querySelector("#new-post-form");
 const closeBtns = document.querySelectorAll(".modal__close-btn, .modal__close-preview");
 
+profileNameElement.textContent = "Loading...";
+profileJobElement.textContent = "Loading...";
+document.querySelector(".profile__avatar").src = "";
+
 const initialCards = [
   { name: "Val Thorens", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg" },
   { name: "Restaurant terrace", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg" },
@@ -69,21 +73,6 @@ api.getInitialCards()
     console.error(err);
     if (err.status === 404) {
       console.log('Cards not found');
-    } else {
-      console.log('An error occurred:', err.message);
-    }
-  });
-
-  api.editUserInfo({ name: profileNameElement.textContent, about: profileJobElement.textContent })
-  .then(userData => {
-    profileNameElement.textContent = userData.name;
-    profileJobElement.textContent = userData.about;
-    document.querySelector(".profile__avatar").src = userData.avatar || avatar;
-  })
-  .catch(err => {
-    console.error(err);
-    if (err.status === 404) {
-      console.log('User not found');
     } else {
       console.log('An error occurred:', err.message);
     }
@@ -140,11 +129,17 @@ function handleClickOutsideModal(e) {
 
 
 function renderInitialCards() {
-  initialCards.forEach((cardData) => renderCard(cardData, "appendChild"));
+  initialCards.forEach((cardData) => {
+    const cardElement = createCardElement(cardData);
+    cardList.appendChild(cardElement);
+  });
 }
 
 function addNewCard(name, link) {
-  if (name && link) renderCard({ name, link });
+  if (name && link) {
+    const cardElement = createCardElement({ name, link });
+    cardList.prepend(cardElement);
+  }
 }
 
 function populateProfileForm() {
@@ -161,9 +156,19 @@ function handleFormSubmit(e) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileNameElement.textContent = nameInput.value.trim();
-  profileJobElement.textContent = jobInput.value.trim();
-  handleFormSubmit(evt);
+  
+  api.editUserInfo({
+      name: nameInput.value,
+      about: jobInput.value
+  })
+  .then((userData) => {
+      profileNameElement.textContent = userData.name;
+      profileJobElement.textContent = userData.about;
+      closePopup(editProfileModal);
+  })
+  .catch((err) => {
+      console.log(`Error: ${err}`);
+  });
 }
 
 function handleCardFormSubmit(evt) {
@@ -173,7 +178,6 @@ function handleCardFormSubmit(evt) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderInitialCards();
   profileEditBtn.addEventListener("click", () => {
     populateProfileForm();
     resetValidation(editProfileForm, Settings);
