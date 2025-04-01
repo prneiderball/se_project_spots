@@ -31,7 +31,6 @@ class Api {
         .then(([userData, cards]) => {
           return { userData, cards };
         })
-        .catch(err => this.handleError(err));
     }
 
       
