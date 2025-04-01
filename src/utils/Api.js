@@ -13,6 +13,8 @@ class Api {
             if (res.ok) {
                 return res.json();
             }
+            const error = new Error(`Error: ${res.status}`);
+            error.status = res.status;
             return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
@@ -41,6 +43,25 @@ class Api {
                 return { userData, cards };
             });
     }
+    editUserInfo({ name, about }) {
+        return fetch(`${this._baseUrl}/users/me`, {
+              method: "PATCH",
+              headers: this._headers,
+              body: JSON.stringify({
+                name,
+                about,
+              }),
+            })
+        .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                const error = new Error(`Error: ${res.status}`);
+                error.status = res.status;
+                return Promise.reject(new Error(`Error: ${res.status}`));
+            })
+            .catch(err => this.handleError(err));
+        }
 
     handleError(err) {
         console.error(err);

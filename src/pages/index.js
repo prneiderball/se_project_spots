@@ -59,6 +59,10 @@ api.getUserInfo()
 
 api.getInitialCards()
   .then(cards => {
+    cards.forEach(card => {
+      const cardElement = createCardElement(card);
+      cardList.appendChild(cardElement);
+    });
     console.log('Cards loaded:', cards);
   })
   .catch(err => {
@@ -119,10 +123,6 @@ function handleClickOutsideModal(e) {
   if (e.target.classList.contains("modal")) closePopup(e.target);
 }
 
-function renderCard(item, method = "prepend") {
-  const cardElement = createCardElement(item);
-  method === "prepend" ? cardList.prepend(cardElement) : cardList.appendChild(cardElement);
-}
 
 function renderInitialCards() {
   initialCards.forEach((cardData) => renderCard(cardData, "appendChild"));
