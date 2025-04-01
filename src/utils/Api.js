@@ -7,8 +7,16 @@ class Api {
         return fetch(`${this.options.baseUrl}/users/me`, {
             headers: {
                 authorization: "46c1a639-4215-418c-8205-87dec37d68b7",
-            }
-        });
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(new Error(`Error: ${res.status}`));
+            })
+            .catch(err => this.handleError(err));
+        }
     }
   
     getInitialCards() {
