@@ -6,46 +6,44 @@ class Api {
     getUserInfo() {
         return fetch(`${this.options.baseUrl}/users/me`, {
             headers: {
-                authorization: "46c1a639-4215-418c-8205-87dec37d68b7",
-                }
-            })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(new Error(`Error: ${res.status}`));
-            })
-            .catch(err => this.handleError(err));
-        };
-    }
-  
-    getInitialCards() {
-        return fetch("https://around-api.en.tripleten-services.com/v1", {
-          headers: {
-            authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
-          }
+                authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
+            }
         })
-          .then(res => {
+        .then(res => {
             if (res.ok) {
-              return res.json();
+                return res.json();
             }
             return Promise.reject(new Error(`Error: ${res.status}`));
-          })
-          .catch(err => this.handleError(err));
-      }
-  
-    getUserAndCards() {
-      return Promise.all([this.getUserInfo(), this.getInitialCards()])
-        .then(([userData, cards]) => {
-          return { userData, cards };
         })
+        .catch(err => this.handleError(err));
     }
 
-      
+    getInitialCards() {
+        return fetch(`${this.options.baseUrl}/cards`, { // Adjust endpoint as needed
+            headers: {
+                authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
+            }
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(new Error(`Error: ${res.status}`));
+        })
+        .catch(err => this.handleError(err));
+    }
+
+    getUserAndCards() {
+        return Promise.all([this.getUserInfo(), this.getInitialCards()])
+            .then(([userData, cards]) => {
+                return { userData, cards };
+            });
+    }
+
     handleError(err) {
         console.error(err);
         throw err;
-      }
-  }
-  
+    }
+}
+
 export default Api;
