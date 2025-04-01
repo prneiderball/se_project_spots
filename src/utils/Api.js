@@ -16,7 +16,7 @@ class Api {
                 return Promise.reject(new Error(`Error: ${res.status}`));
             })
             .catch(err => this.handleError(err));
-        }
+        };
     }
   
     getInitialCards() {
