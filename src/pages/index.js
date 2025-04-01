@@ -1,5 +1,6 @@
 import "./index.css";
 import { Settings, resetValidation, enableValidation } from "../validation.js";
+import Api from "../utils/Api.js";
 import logo from "../images/logo.svg";
 import avatar from "../images/avatar.jpg";
 import pencilIcon from "../images/pencil-icon.svg";
@@ -42,7 +43,7 @@ const api = new Api({
 });
 
 api.getInitialCards()
-  .then((cards) => {console.log(cards);})/  .catch((err) => console.error("Error fetching initial cards:", err));
+  .then((cards) => {console.log(cards);})  .catch((err) => console.error("Error fetching initial cards:", err));
 
 function createCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
