@@ -43,8 +43,16 @@ const api = new Api({
 });
 
 api.getInitialCards()
-  .then((cards) => {console.log(cards);})  .catch((err) => console.error("Error fetching initial cards:", err));
-
+  .then(cards => {
+    console.log('Cards loaded:', cards);
+  })
+  .catch(err => {
+    if (err.message.includes('404')) {
+      console.log('Cards not found');
+    } else {
+      console.log('An error occurred:', err.message);
+    }
+  });
 function createCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");

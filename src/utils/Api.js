@@ -1,6 +1,14 @@
 class Api {
     constructor(options) {
-      // constructor body
+      this.options= options;
+    }
+
+    getUserInfo() {
+        return fetch(`${this.options.baseUrl}/users/me`, {
+            headers: {
+                authorization: "46c1a639-4215-418c-8205-87dec37d68b7",
+            }
+        });
     }
   
     getInitialCards() {
@@ -13,10 +21,24 @@ class Api {
             if (res.ok) {
               return res.json();
             }
-          });
+            return Promise.reject(new Error(`Error: ${res.status}`));
+          })
+          .catch(err => this.handleError(err));
       }
   
-    // other methods for working with the API
+    getUserAndCards() {
+      return Promise.all([this.getUserInfo(), this.getInitialCards()])
+        .then(([userData, cards]) => {
+          return { userData, cards };
+        })
+        .catch(err => this.handleError(err));
+    }
+
+      
+    handleError(err) {
+        console.error(err);
+        throw err;
+      }
   }
   
 export default Api;
