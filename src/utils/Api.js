@@ -19,7 +19,7 @@ class Api {
     }
 
     getInitialCards() {
-        return fetch(`${this.options.baseUrl}/cards`, { // Adjust endpoint as needed
+        return fetch(`${this.options.baseUrl}/cards`, { 
             headers: {
                 authorization: "46c1a639-4215-418c-8205-87dec37d68b7"
             }
@@ -28,6 +28,8 @@ class Api {
             if (res.ok) {
                 return res.json();
             }
+            const error = new Error(`Error: ${res.status}`);
+            error.status = res.status;
             return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));

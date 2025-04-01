@@ -42,17 +42,34 @@ const api = new Api({
   }
 });
 
+api.getUserInfo()
+  .then(userData => {
+    profileNameElement.textContent = userData.name;
+    profileJobElement.textContent = userData.about;
+    document.querySelector(".profile__avatar").src = userData.avatar || avatar;
+  })
+  .catch(err => {
+    console.error(err);
+    if (err.status === 404) {
+      console.log('User not found');
+    } else {
+      console.log('An error occurred:', err.message);
+    }
+  });
+
 api.getInitialCards()
   .then(cards => {
     console.log('Cards loaded:', cards);
   })
   .catch(err => {
-    if (err.message.includes('404')) {
+    console.error(err);
+    if (err.status === 404) {
       console.log('Cards not found');
     } else {
       console.log('An error occurred:', err.message);
     }
   });
+  
 function createCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
