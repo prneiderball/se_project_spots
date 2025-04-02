@@ -173,9 +173,27 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  addNewCard(captionInput.value.trim(), imageUrlInput.value.trim());
-  handleFormSubmit(evt);
+
+  const name = captionInput.value.trim();
+  const link = imageUrlInput.value.trim();
+
+  if (!name || !link) {
+    console.error("Error: Name and link are required.");
+    return;
+  }
+
+  api.addNewCard({ name, link })
+    .then(cardData => {
+      const cardElement = createCardElement(cardData);
+      cardList.prepend(cardElement);
+      closePopup(newPostModal);
+      evt.target.reset();
+    })
+    .catch(error => {
+      console.error("Failed to add new card:", error);
+    });
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   profileEditBtn.addEventListener("click", () => {
