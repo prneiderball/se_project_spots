@@ -6,29 +6,25 @@
     <meta name="author" content="P.R.Neider-Ball" />
     <meta name="description" content="Spots" />
     <meta name="keywords" content="Photo sharing, Portrait photographers" />
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../src/images/favicon.ico" type="image/x-icon" />
     <title>Spots</title>
   </head>
   <body class="page">
     <header class="header">
-      <img src="./images/logo.svg" alt="Spots Logo" class="header__logo" />
+      <img src="<%=require('../src/images/logo.svg')%>" alt="Spots Logo" class="header__logo" />
     </header>
     <main class="content">
       <section class="profile page__section">
-        <img
-          src="./images/avatar.jpg"
-          alt="Bessie Coleman"
-          class="profile__avatar"
-        />
+        <img src="<%=require('../src/images/avatar.jpg')%>" alt="Bessie Coleman" class="profile__avatar" />
         <div class="profile__column">
-          <h1 class="profile__name">Bessie Coleman</h1>
-          <p class="profile__description">Civil Aviator</p>
+          <h1 class="profile__name">Loading...</h1>
+          <p class="profile__description">Loading...</p>
           <button type="button" class="profile__edit-btn button">
-            <img src="./images/pencil-icon.svg" alt="Edit icon" />Edit Profile
+            <img src="<%=require('../src/images/pencil-icon.svg')%>" alt="Edit icon" />Edit Profile
           </button>
         </div>
         <button type="button" class="profile__add-btn button">
-          <img src="./images/plus.svg" alt="Plus icon" /> New Post
+          <img src="<%=require('../src/images/plus.svg')%>" alt="Plus icon" /> New Post
         </button>
       </section>
       <div class="cards page__section">
@@ -38,7 +34,7 @@
       </div>
     </main>
     <footer class="footer page__section">
-      <h2 class="footer__content">2024 © Spots</h2>
+      <h2 class="footer__content">2025 © Spots</h2>
     </footer>
     <template id="card-template">
       <li class="card">
