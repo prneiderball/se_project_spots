@@ -68,6 +68,30 @@ class Api {
             .catch(err => this.handleError(err));
         }
 
+    addNewCard({ name, link }) {
+        return fetch(`${this._baseUrl}/cards`, {
+            method: "POST",
+            "Content-Type": "application/json",
+            headers: {
+                ...this._headers,
+                authorization: this._headers.authorization
+            },
+            body: JSON.stringify({
+                name,
+                link,
+            }),
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            const error = new Error(`Error: ${res.status}`);
+            error.status = res.status;
+            return Promise.reject(new Error(`Error: ${res.status}`));
+        })
+        .catch(err => this.handleError(err));
+    }
+
     handleError(err) {
         console.error(err);
         throw err;

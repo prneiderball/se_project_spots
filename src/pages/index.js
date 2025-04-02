@@ -156,7 +156,7 @@ function handleFormSubmit(e) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  
+
   api.editUserInfo({
       name: nameInput.value,
       about: jobInput.value
@@ -176,11 +176,6 @@ function handleCardFormSubmit(evt) {
 
   const name = captionInput.value.trim();
   const link = imageUrlInput.value.trim();
-
-  if (!name || !link) {
-    console.error("Error: Name and link are required.");
-    return;
-  }
 
   api.addNewCard({ name, link })
     .then(cardData => {
