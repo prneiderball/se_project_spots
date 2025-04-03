@@ -24,19 +24,13 @@ const profileAddBtn = document.querySelector(".profile__add-btn");
 const editProfileForm = document.querySelector("#edit-profile-form");
 const newPostForm = document.querySelector("#new-post-form");
 const closeBtns = document.querySelectorAll(".modal__close-btn, .modal__close-preview");
+const deleteModal = document.querySelector("#delete-modal");
+const deleteConfirmBtn = deleteModal.querySelector(".modal__submit-btn_delete");
+const deleteCancelBtn = deleteModal.querySelector(".modal__submit-btn_cancel");
 
 profileNameElement.textContent = "Loading...";
 profileJobElement.textContent = "Loading...";
 document.querySelector(".profile__avatar").src = "";
-
-const initialCards = [
-  { name: "Val Thorens", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg" },
-  { name: "Restaurant terrace", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg" },
-  { name: "An outdoor cafe", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/3-photo-by-tubanur-dogan-from-pexels.jpg" },
-  { name: "A very long bridge", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/4-photo-by-maurice-laschet-from-pexels.jpg" },
-  { name: "Tunnel with morning light", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/5-photo-by-van-anh-nguyen-from-pexels.jpg" },
-  { name: "Mountain house", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg" },
-];
 
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -46,20 +40,16 @@ const api = new Api({
   }
 });
 
+let selectedCard;
+let selectedCardId;
+
 api.getUserInfo()
   .then(userData => {
     profileNameElement.textContent = userData.name;
     profileJobElement.textContent = userData.about;
     document.querySelector(".profile__avatar").src = userData.avatar || avatar;
   })
-  .catch(err => {
-    console.error(err);
-    if (err.status === 404) {
-      console.log('User not found');
-    } else {
-      console.log('An error occurred:', err.message);
-    }
-  });
+  .catch(err => console.error("Error fetching user info:", err));
 
 api.getInitialCards()
   .then(cards => {
@@ -67,17 +57,9 @@ api.getInitialCards()
       const cardElement = createCardElement(card);
       cardList.appendChild(cardElement);
     });
-    console.log('Cards loaded:', cards);
   })
-  .catch(err => {
-    console.error(err);
-    if (err.status === 404) {
-      console.log('Cards not found');
-    } else {
-      console.log('An error occurred:', err.message);
-    }
-  });
-  
+  .catch(err => console.error("Error loading cards:", err));
+
 function createCardElement(data) {
   const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
@@ -89,15 +71,43 @@ function createCardElement(data) {
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
 
-  cardLikedBtn.addEventListener("click", () => cardLikedBtn.classList.toggle("card__like-btn--liked"));
+  cardLikedBtn.addEventListener("click", () =>
+    cardLikedBtn.classList.toggle("card__like-btn--liked")
+  );
   cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
-  deleteBtn.addEventListener("click", (e) => { e.stopPropagation(); cardElement.remove(); });
+
+  deleteBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    selectedCard = cardElement;
+    selectedCardId = data._id;
+    openPopup(deleteModal);
+  });
 
   return cardElement;
 }
 
+deleteConfirmBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  if (selectedCardId) {
+    api.deleteCard(selectedCardId)
+      .then(() => {
+        selectedCard.remove();
+        selectedCard = null;
+        selectedCardId = null;
+        closePopup(deleteModal);
+      })
+      .catch(err => console.error("Error deleting card:", err));
+  }
+});
+
+deleteCancelBtn.addEventListener("click", () => {
+  closePopup(deleteModal);
+  selectedCard = null;
+  selectedCardId = null;
+});
+
 function openImageModal(imageUrl, imageCaption) {
-  if (!previewModal || !modalImage || !modalCaption) return console.error("Modal components not found");
+  if (!previewModal || !modalImage || !modalCaption) return;
   modalImage.src = imageUrl;
   modalImage.alt = imageCaption;
   modalCaption.textContent = imageCaption;
@@ -118,7 +128,7 @@ function closePopup(popup) {
 
 function handleEscKey(event) {
   if (event.key === "Escape") {
-    const openedModal = document.querySelector(".modal.modal--opened");
+    const openedModal = document.querySelector(".modal--opened");
     if (openedModal) closePopup(openedModal);
   }
 }
@@ -127,79 +137,48 @@ function handleClickOutsideModal(e) {
   if (e.target.classList.contains("modal")) closePopup(e.target);
 }
 
-
-function renderInitialCards() {
-  initialCards.forEach((cardData) => {
-    const cardElement = createCardElement(cardData);
-    cardList.appendChild(cardElement);
-  });
-}
-
-function addNewCard(name, link) {
-  if (name && link) {
-    const cardElement = createCardElement({ name, link });
-    cardList.prepend(cardElement);
-  }
-}
-
-function populateProfileForm() {
-  nameInput.value = profileNameElement.textContent;
-  jobInput.value = profileJobElement.textContent;
-}
-
-function handleFormSubmit(e) {
-  e.preventDefault();
-  e.target.reset();
-  resetValidation(e.target, Settings);
-  closePopup(e.target.closest(".modal"));
-}
-
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-
   api.editUserInfo({
-      name: nameInput.value,
-      about: jobInput.value
+    name: nameInput.value,
+    about: jobInput.value
   })
-  .then((userData) => {
+    .then(userData => {
       profileNameElement.textContent = userData.name;
       profileJobElement.textContent = userData.about;
       closePopup(editProfileModal);
-  })
-  .catch((err) => {
-      console.log(`Error: ${err}`);
-  });
+    })
+    .catch(err => console.error("Error updating profile:", err));
 }
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-
   const name = captionInput.value.trim();
   const link = imageUrlInput.value.trim();
-
   api.addNewCard({ name, link })
     .then(cardData => {
       const cardElement = createCardElement(cardData);
       cardList.prepend(cardElement);
       closePopup(newPostModal);
-      evt.target.reset();
+      newPostForm.reset();
     })
-    .catch(error => {
-      console.error("Failed to add new card:", error);
-    });
+    .catch(err => console.error("Error adding card:", err));
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   profileEditBtn.addEventListener("click", () => {
-    populateProfileForm();
+    nameInput.value = profileNameElement.textContent;
+    jobInput.value = profileJobElement.textContent;
     resetValidation(editProfileForm, Settings);
     openPopup(editProfileModal);
   });
+
   profileAddBtn.addEventListener("click", () => openPopup(newPostModal));
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
   newPostForm.addEventListener("submit", handleCardFormSubmit);
-  closeBtns.forEach((btn) => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
+  closeBtns.forEach((btn) =>
+    btn.addEventListener("click", () => closePopup(btn.closest(".modal")))
+  );
 });
 
 enableValidation(Settings);
