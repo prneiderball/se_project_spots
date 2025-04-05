@@ -78,9 +78,8 @@ api.getInitialCards()
     cardImage.src = data.link;
     cardImage.alt = data.name;
     cardTitle.textContent = data.name;
-  
-    const isLiked = data.likes && data.likes.some(like => like._id === currentUserId);
-    if (isLiked) {
+
+
       cardLikedBtn.classList.add("card__like-btn--liked");
     cardLikedBtn.addEventListener("click", () => {
       const shouldLike = !cardLikedBtn.classList.contains("card__like-btn--liked");
@@ -103,29 +102,7 @@ api.getInitialCards()
   
     return cardElement; 
   }
-  
-  
 
-  cardLikedBtn.addEventListener("click", () => {
-    const isLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
-    api.toggleLike(data._id, !isLiked)
-      .then(updatedCard => {
-        cardLikedBtn.classList.toggle("card__like-btn--liked", !isLiked);
-      })
-      .catch(err => console.error("Error toggling like:", err));
-  });
-
-  cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
-
-  deleteBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    selectedCard = cardElement;
-    selectedCardId = data._id;
-    openPopup(deleteModal);
-  });
-
-  return cardElement;
-}
 
 deleteConfirmBtn.addEventListener("click", (event) => {
   event.preventDefault();
