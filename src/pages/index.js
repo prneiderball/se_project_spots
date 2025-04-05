@@ -27,10 +27,16 @@ const closeBtns = document.querySelectorAll(".modal__close-btn, .modal__close-pr
 const deleteModal = document.querySelector("#delete-modal");
 const deleteConfirmBtn = deleteModal.querySelector(".modal__submit-btn_delete");
 const deleteCancelBtn = deleteModal.querySelector(".modal__submit-btn_cancel");
+const avatarModal = document.querySelector("#edit-avatar-modal");
+const avatarInput = avatarModal.querySelector("#avatar_url");
+const avatarForm = avatarModal.querySelector("#edit-avatar-form");
+const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
+const avatarPreview = document.querySelector(".profile__avatar");
+const avatarEditBtn = document.querySelector(".profile__picture-btn");
 
 profileNameElement.textContent = "Loading...";
 profileJobElement.textContent = "Loading...";
-document.querySelector(".profile__avatar").src = "";
+avatarPreview.src = "";
 
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -47,7 +53,7 @@ api.getUserInfo()
   .then(userData => {
     profileNameElement.textContent = userData.name;
     profileJobElement.textContent = userData.about;
-    document.querySelector(".profile__avatar").src = userData.avatar || avatar;
+    avatarPreview.src = userData.avatar || avatar;
   })
   .catch(err => console.error("Error fetching user info:", err));
 
@@ -71,9 +77,15 @@ function createCardElement(data) {
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
 
-  cardLikedBtn.addEventListener("click", () =>
-    cardLikedBtn.classList.toggle("card__like-btn--liked")
-  );
+  cardLikedBtn.addEventListener("click", () => {
+    const isLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
+    api.toggleLike(data._id, !isLiked)
+      .then(updatedCard => {
+        cardLikedBtn.classList.toggle("card__like-btn--liked", !isLiked);
+      })
+      .catch(err => console.error("Error toggling like:", err));
+  });
+
   cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
 
   deleteBtn.addEventListener("click", (e) => {
@@ -105,6 +117,23 @@ deleteCancelBtn.addEventListener("click", () => {
   selectedCard = null;
   selectedCardId = null;
 });
+
+avatarEditBtn.addEventListener("click", () => {
+  enableValidation(Settings);
+  openPopup(avatarModal);
+  resetValidation(avatarForm, Settings);  
+});
+
+function editAvatarFormSubmit(evt) {
+  evt.preventDefault();
+  const avatarUrl = avatarInput.value.trim();
+  api.editProfileAvatar({ avatar: avatarUrl })
+    .then(userData => {
+      avatarPreview.src = userData.avatar || avatar;
+      closePopup(avatarModal);
+    })
+    .catch(err => console.error("Error updating avatar:", err));
+}
 
 function openImageModal(imageUrl, imageCaption) {
   if (!previewModal || !modalImage || !modalCaption) return;
@@ -176,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
   profileAddBtn.addEventListener("click", () => openPopup(newPostModal));
   editProfileForm.addEventListener("submit", handleProfileFormSubmit);
   newPostForm.addEventListener("submit", handleCardFormSubmit);
+  avatarForm.addEventListener("submit", editAvatarFormSubmit);
   closeBtns.forEach((btn) =>
     btn.addEventListener("click", () => closePopup(btn.closest(".modal")))
   );

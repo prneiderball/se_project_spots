@@ -6,16 +6,10 @@ class Api {
   
     getUserInfo() {
       return fetch(`${this._baseUrl}/users/me`, {
-        headers: {
-          authorization: this._headers.authorization
-        }
+        headers: { authorization: this._headers.authorization }
       })
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          const error = new Error(`Error: ${res.status}`);
-          error.status = res.status;
+          if (res.ok) return res.json();
           return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
@@ -23,17 +17,10 @@ class Api {
   
     getInitialCards() {
       return fetch(`${this._baseUrl}/cards`, {
-        headers: {
-          ...this._headers,
-          authorization: this._headers.authorization
-        }
+        headers: { ...this._headers, authorization: this._headers.authorization }
       })
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          const error = new Error(`Error: ${res.status}`);
-          error.status = res.status;
+          if (res.ok) return res.json();
           return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
@@ -41,29 +28,17 @@ class Api {
   
     getUserAndCards() {
       return Promise.all([this.getUserInfo(), this.getInitialCards()])
-        .then(([userData, cards]) => {
-          return { userData, cards };
-        });
+        .then(([userData, cards]) => ({ userData, cards }));
     }
   
     editUserInfo({ name, about }) {
       return fetch(`${this._baseUrl}/users/me`, {
         method: "PATCH",
-        headers: {
-          ...this._headers,
-          authorization: this._headers.authorization
-        },
-        body: JSON.stringify({
-          name,
-          about
-        })
+        headers: { ...this._headers, authorization: this._headers.authorization },
+        body: JSON.stringify({ name, about })
       })
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          const error = new Error(`Error: ${res.status}`);
-          error.status = res.status;
+          if (res.ok) return res.json();
           return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
@@ -72,22 +47,11 @@ class Api {
     addNewCard({ name, link }) {
       return fetch(`${this._baseUrl}/cards`, {
         method: "POST",
-        headers: {
-          ...this._headers,
-          authorization: this._headers.authorization,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name,
-          link
-        })
+        headers: { ...this._headers, authorization: this._headers.authorization, "Content-Type": "application/json" },
+        body: JSON.stringify({ name, link })
       })
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          const error = new Error(`Error: ${res.status}`);
-          error.status = res.status;
+          if (res.ok) return res.json();
           return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
@@ -96,21 +60,42 @@ class Api {
     deleteCard(cardId) {
       return fetch(`${this._baseUrl}/cards/${cardId}`, {
         method: "DELETE",
-        headers: {
-          ...this._headers,
-          authorization: this._headers.authorization
-        }
+        headers: { ...this._headers, authorization: this._headers.authorization }
       })
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          const error = new Error(`Error: ${res.status}`);
-          error.status = res.status;
+          if (res.ok) return res.json();
           return Promise.reject(new Error(`Error: ${res.status}`));
         })
         .catch(err => this.handleError(err));
     }
+  
+    toggleLike(cardId, shouldLike) {
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+          method: shouldLike ? "PUT" : "DELETE",
+          headers: {
+            ...this._headers,
+            authorization: this._headers.authorization
+          }
+        })
+        .then(res => {
+          if (res.ok) return res.json();
+          return Promise.reject(new Error(`Error: ${res.status}`));
+        })
+        .catch(err => this.handleError(err));
+      }
+      editProfileAvatar({ avatar }) {
+        return fetch(`${this._baseUrl}/users/me/avatar`, {
+          method: "PATCH",
+          headers: { ...this._headers, authorization: this._headers.authorization, "Content-Type": "application/json" },
+          body: JSON.stringify({ avatar })
+        })
+          .then(res => {
+            if (res.ok) return res.json();
+            return Promise.reject(new Error(`Error: ${res.status}`));
+          })
+          .catch(err => this.handleError(err));
+      }
+    
   
     handleError(err) {
       console.error(err);

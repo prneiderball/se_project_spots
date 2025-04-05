@@ -6,7 +6,7 @@
     <meta name="author" content="P.R.Neider-Ball" />
     <meta name="description" content="Spots" />
     <meta name="keywords" content="Photo sharing, Portrait photographers" />
-    <link rel="shortcut icon" href="../src/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>Spots</title>
   </head>
   <body class="page">
@@ -15,7 +15,12 @@
     </header>
     <main class="content">
       <section class="profile page__section">
+        <div class="profile__picture-container">
         <img src="<%=require('../src/images/avatar.jpg')%>" alt="Bessie Coleman" class="profile__avatar" />
+          <button class="profile__picture-btn">
+            <img class="profile__edit-icon" src="<%= require('../src/images/editavatar.png') %>" alt="Edit icon" />
+          </button>
+        </div>
         <div class="profile__column">
           <h1 class="profile__name">Bessie Coleman</h1>
           <p class="profile__description">Civil Aviator</p>
@@ -154,6 +159,34 @@
         <form id="delete-form" class="modal__form delete-form" novalidate>
           <button type="submit" class="modal__submit-btn modal__submit-btn_delete">Delete</button>          
           <button type="button" class="modal__submit-btn modal__submit-btn_cancel">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <!--Edit avatar Modal-->
+<div class="modal modal--edit-avatar" id="edit-avatar-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close-btn button"></button>
+        <h2 class="modal__title">Edit profile avatar</h2>
+        <form id="edit-avatar-form" name="edit-avatar" class="modal__form">
+          <label for="image_url" class="modal__label">
+            Profile Picture
+            <input
+              id="avatar_url"
+              type="url"
+              class="modal__input"
+              placeholder="Paste the link to an image"
+              required
+            />
+            <span id="image_url-error" class="modal__error"></span>
+          </label>
+          <button
+            type="submit"
+            class="modal__submit-btn button modal__submit-btn--disabled"
+            disabled
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>

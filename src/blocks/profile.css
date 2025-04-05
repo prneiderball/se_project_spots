@@ -5,12 +5,42 @@
   border-bottom: 1px rgba(33, 33, 33, 0.4) solid;
 }
 
+.profile__picture-container {
+  position: relative;
+  height: 190px;
+  width: 190px;
+  margin-right: 20px;
+}
+
+.profile__picture-btn {
+  position: absolute;
+  height: 190px;
+  width: 190px;
+  background-color: #000000;
+  opacity: 0.5;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  visibility: hidden;
+}
+
+.profile__picture-container:hover .profile__picture-btn {
+  visibility: visible;
+  cursor: pointer;
+}
+
 .profile__avatar {
   object-fit: cover;
-  margin-right: 20px;
   border-radius: 8px;
   width: 190px;
   height: 190px;
+}
+
+.profile__picture-btn::after {
+  content: " Edit Avatar";
+  color: #ffffff;
 }
 
 .profile__column {
