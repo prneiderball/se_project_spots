@@ -48,9 +48,11 @@ const api = new Api({
 
 let selectedCard;
 let selectedCardId;
+let currentUserId;
 
 api.getUserInfo()
   .then(userData => {
+    currentUserId = userData._id;
     profileNameElement.textContent = userData.name;
     profileJobElement.textContent = userData.about;
     avatarPreview.src = userData.avatar || avatar;
@@ -66,16 +68,43 @@ api.getInitialCards()
   })
   .catch(err => console.error("Error loading cards:", err));
 
-function createCardElement(data) {
-  const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardTitle = cardElement.querySelector(".card__title");
-  const cardLikedBtn = cardElement.querySelector(".card__like-btn");
-  const deleteBtn = cardElement.querySelector(".card__delete-btn");
-
-  cardImage.src = data.link;
-  cardImage.alt = data.name;
-  cardTitle.textContent = data.name;
+  function createCardElement(data) {
+    const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
+    const cardImage = cardElement.querySelector(".card__image");
+    const cardTitle = cardElement.querySelector(".card__title");
+    const cardLikedBtn = cardElement.querySelector(".card__like-btn");
+    const deleteBtn = cardElement.querySelector(".card__delete-btn");
+  
+    cardImage.src = data.link;
+    cardImage.alt = data.name;
+    cardTitle.textContent = data.name;
+  
+    const isLiked = data.likes && data.likes.some(like => like._id === currentUserId);
+    if (isLiked) {
+      cardLikedBtn.classList.add("card__like-btn--liked");
+    cardLikedBtn.addEventListener("click", () => {
+      const shouldLike = !cardLikedBtn.classList.contains("card__like-btn--liked");
+      api.toggleLike(data._id, shouldLike)
+        .then(updatedCard => {
+          data.likes = updatedCard.likes;
+          cardLikedBtn.classList.toggle("card__like-btn--liked", shouldLike);
+        })
+        .catch(err => console.error("Error toggling like:", err));
+    });
+  
+    cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
+  
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      selectedCard = cardElement;
+      selectedCardId = data._id;
+      openPopup(deleteModal);
+    });
+  
+    return cardElement; 
+  }
+  
+  
 
   cardLikedBtn.addEventListener("click", () => {
     const isLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
