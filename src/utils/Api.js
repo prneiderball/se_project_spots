@@ -69,35 +69,18 @@ class Api {
         .catch(err => this.handleError(err));
     }
   
-    toggleLike(cardId, shouldLike) {
-        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-          method: shouldLike ? "PUT" : "DELETE",
-          headers: {
-            ...this._headers,
-            authorization: this._headers.authorization
-          }
+    toggleLike(cardId, isLiked) {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+        method: isLiked ? "PUT" : "DELETE";
+        headers: { ...this._headers, authorization: this._headers.authorization }
+      })
+        .then(res => {
+          if (res.ok) return res.json();
+          return Promise.reject(new Error(`Error: ${res.status}`));
         })
-          .then(res => {
-            if (res.ok) return res.json();  // return updated card data
-            return Promise.reject(new Error(`Error: ${res.status}`));
-          })
-          .catch(err => this.handleError(err));
-      }
-      
-      editProfileAvatar({ avatar }) {
-        return fetch(`${this._baseUrl}/users/me/avatar`, {
-          method: "PATCH",
-          headers: { ...this._headers, authorization: this._headers.authorization, "Content-Type": "application/json" },
-          body: JSON.stringify({ avatar })
-        })
-          .then(res => {
-            if (res.ok) return res.json();
-            return Promise.reject(new Error(`Error: ${res.status}`));
-          })
-          .catch(err => this.handleError(err));
-      }
-    
-  
+        .catch(err => this.handleError(err));
+    }
+
     handleError(err) {
       console.error(err);
       throw err;
