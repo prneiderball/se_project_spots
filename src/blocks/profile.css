@@ -39,7 +39,7 @@
 }
 
 .profile__picture-btn::after {
-  content: " Edit Avatar";
+  content: "Edit Avatar";
   color: #ffffff;
 }
 
