@@ -71,7 +71,7 @@ class Api {
   
     toggleLike(cardId, isLiked) {
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-        method: isLiked ? "PUT" : "DELETE";
+        method: isLiked ? "PUT" : "DELETE",
         headers: { ...this._headers, authorization: this._headers.authorization }
       })
         .then(res => {
