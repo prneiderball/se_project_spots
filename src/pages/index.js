@@ -59,7 +59,7 @@ api.getUserInfo()
   })
   .catch(err => console.error("Error fetching user info:", err));
 
-  api.getInitialCards()
+api.getInitialCards()
   .then(cards => {
     console.log("Loaded cards:", cards);
     cards.forEach(card => {
@@ -69,47 +69,49 @@ api.getUserInfo()
   })
   .catch(err => console.error("Error loading cards:", err));
 
-  function createCardElement(data) {
-    const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
-    const cardImage = cardElement.querySelector(".card__image");
-    const cardTitle = cardElement.querySelector(".card__title");
-    const cardLikedBtn = cardElement.querySelector(".card__like-btn");
-    const deleteBtn = cardElement.querySelector(".card__delete-btn");
-  
-    cardImage.src = data.link;
-    cardImage.alt = data.name;
-    cardTitle.textContent = data.name;
-  
-    if (data.isLiked) {
-      cardLikedBtn.classList.add("card__like-btn--liked");
-    }
-  
-    cardLikedBtn.addEventListener("click", () => {
-      const isCurrentlyLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
-  
-      api.toggleLike(data._id, !isCurrentlyLiked)
-        .then(updatedCard => {
-          cardLikedBtn.classList.toggle("card__like-btn--liked", updatedCard.isLiked);
-        })
-        .catch(err => console.error("Error toggling like:", err));
-    });
-  
-    cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
-  
-    deleteBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      selectedCard = cardElement;
-      selectedCardId = data._id;
-      openPopup(deleteModal);
-    });
-  
-    return cardElement;
+function createCardElement(data) {
+  const cardElement = cardTemplate.content.querySelector("li").cloneNode(true);
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+  const cardLikedBtn = cardElement.querySelector(".card__like-btn");
+  const deleteBtn = cardElement.querySelector(".card__delete-btn");
+
+  cardImage.src = data.link;
+  cardImage.alt = data.name;
+  cardTitle.textContent = data.name;
+
+  if (data.isLiked) {
+    cardLikedBtn.classList.add("card__like-btn--liked");
   }
-  
+
+  cardLikedBtn.addEventListener("click", () => {
+    const isCurrentlyLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
+
+    api.toggleLike(data._id, !isCurrentlyLiked)
+      .then(updatedCard => {
+        cardLikedBtn.classList.toggle("card__like-btn--liked", updatedCard.isLiked);
+      })
+      .catch(err => console.error("Error toggling like:", err));
+  });
+
+  cardImage.addEventListener("click", () => openImageModal(data.link, data.name));
+
+  deleteBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    selectedCard = cardElement;
+    selectedCardId = data._id;
+    openPopup(deleteModal);
+  });
+
+  return cardElement;
+}
 
 deleteConfirmBtn.addEventListener("click", (event) => {
   event.preventDefault();
   if (selectedCardId) {
+    const originalText = deleteConfirmBtn.textContent;
+    deleteConfirmBtn.textContent = "Deleting...";
+
     api.deleteCard(selectedCardId)
       .then(() => {
         selectedCard.remove();
@@ -117,7 +119,10 @@ deleteConfirmBtn.addEventListener("click", (event) => {
         selectedCardId = null;
         closePopup(deleteModal);
       })
-      .catch(err => console.error("Error deleting card:", err));
+      .catch(err => console.error("Error deleting card:", err))
+      .finally(() => {
+        deleteConfirmBtn.textContent = originalText;
+      });
   }
 });
 
@@ -135,13 +140,20 @@ avatarEditBtn.addEventListener("click", () => {
 
 function editAvatarFormSubmit(evt) {
   evt.preventDefault();
+  const submitBtn = avatarForm.querySelector(".modal__submit-btn");
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = "Saving...";
+
   const avatarUrl = avatarInput.value.trim();
   api.editProfileAvatar({ avatar: avatarUrl })
     .then(userData => {
       avatarPreview.src = userData.avatar || avatar;
       closePopup(avatarModal);
     })
-    .catch(err => console.error("Error updating avatar:", err));
+    .catch(err => console.error("Error updating avatar:", err))
+    .finally(() => {
+      submitBtn.textContent = originalText;
+    });
 }
 
 function openImageModal(imageUrl, imageCaption) {
@@ -177,6 +189,10 @@ function handleClickOutsideModal(e) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+  const submitBtn = editProfileForm.querySelector(".modal__submit-btn");
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = "Saving...";
+
   api.editUserInfo({
     name: nameInput.value,
     about: jobInput.value
@@ -186,11 +202,18 @@ function handleProfileFormSubmit(evt) {
       profileJobElement.textContent = userData.about;
       closePopup(editProfileModal);
     })
-    .catch(err => console.error("Error updating profile:", err));
+    .catch(err => console.error("Error updating profile:", err))
+    .finally(() => {
+      submitBtn.textContent = originalText;
+    });
 }
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
+  const submitBtn = newPostForm.querySelector(".modal__submit-btn");
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = "Saving...";
+
   const name = captionInput.value.trim();
   const link = imageUrlInput.value.trim();
   api.addNewCard({ name, link })
@@ -200,7 +223,10 @@ function handleCardFormSubmit(evt) {
       closePopup(newPostModal);
       newPostForm.reset();
     })
-    .catch(err => console.error("Error adding card:", err));
+    .catch(err => console.error("Error adding card:", err))
+    .finally(() => {
+      submitBtn.textContent = originalText;
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
