@@ -59,8 +59,9 @@ api.getUserInfo()
   })
   .catch(err => console.error("Error fetching user info:", err));
 
-api.getInitialCards()
+  api.getInitialCards()
   .then(cards => {
+    console.log("Loaded cards:", cards);
     cards.forEach(card => {
       const cardElement = createCardElement(card);
       cardList.appendChild(cardElement);
@@ -78,15 +79,17 @@ api.getInitialCards()
     cardImage.src = data.link;
     cardImage.alt = data.name;
     cardTitle.textContent = data.name;
-
-
+  
+    if (data.isLiked) {
       cardLikedBtn.classList.add("card__like-btn--liked");
+    }
+  
     cardLikedBtn.addEventListener("click", () => {
-      const shouldLike = !cardLikedBtn.classList.contains("card__like-btn--liked");
-      api.toggleLike(data._id, shouldLike)
+      const isCurrentlyLiked = cardLikedBtn.classList.contains("card__like-btn--liked");
+  
+      api.toggleLike(data._id, !isCurrentlyLiked)
         .then(updatedCard => {
-          data.likes = updatedCard.likes;
-          cardLikedBtn.classList.toggle("card__like-btn--liked", shouldLike);
+          cardLikedBtn.classList.toggle("card__like-btn--liked", updatedCard.isLiked);
         })
         .catch(err => console.error("Error toggling like:", err));
     });
@@ -100,9 +103,9 @@ api.getInitialCards()
       openPopup(deleteModal);
     });
   
-    return cardElement; 
+    return cardElement;
   }
-
+  
 
 deleteConfirmBtn.addEventListener("click", (event) => {
   event.preventDefault();
