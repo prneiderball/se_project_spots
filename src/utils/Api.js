@@ -25,6 +25,19 @@ class Api {
         })
         .catch(err => this.handleError(err));
     }
+
+    editProfileAvatar({ avatar }) {
+      return fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: "PATCH",
+        headers: { ...this._headers, authorization: this._headers.authorization, "Content-Type": "application/json" },
+        body: JSON.stringify({ avatar })
+      })
+        .then(res => {
+          if (res.ok) return res.json();
+          return Promise.reject(new Error(`Error: ${res.status}`));
+        })
+        .catch(err => this.handleError(err));
+    }
   
     getUserAndCards() {
       return Promise.all([this.getUserInfo(), this.getInitialCards()])
