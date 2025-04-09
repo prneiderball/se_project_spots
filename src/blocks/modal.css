@@ -198,7 +198,6 @@
   color: #000000;
   font-weight: 500;
   margin: 0;
-  width: 100%;
 }
 
 .modal__submit-btn_delete:hover {
@@ -284,10 +283,12 @@
 
   .delete-buttons-container {
     flex-direction: column;
+    gap: 12px;
   }
 
   .modal__container_delete {
-    max-width: 300px
+    max-width: 300px;
+    height: 100%;
   }
   .modal__title_delete {
     font-weight: 500;
@@ -295,5 +296,10 @@
     line-height: 120%;
     text-align: center;
     margin-bottom: 20px;
+    }
+
+    .del__close-btn {
+      right: -20px;
+      top: -10px;
     }
 }
