@@ -33,6 +33,7 @@
 .modal__container_delete {
   max-width: 630px;
   max-height: 173px;
+  padding: 32px 20px 0;
 }
 
 .modal__close-btn,
@@ -197,7 +198,7 @@
   background-color: #FF6565;
   color: #000000;
   font-weight: 500;
-  margin: 0;
+  margin-bottom: 32px;
 }
 
 .modal__submit-btn_delete:hover {
@@ -208,7 +209,7 @@
   background-color: #ffffff;
   color: #000000;
   font-weight: 500;
-  margin: 0;
+  margin-bottom: 32px;
 }
 
 .modal__submit-btn_cancel:hover {
