@@ -12,12 +12,14 @@ class Api {
   }
 
   _request(endpoint, options = {}) {
-    return fetch(`${this._baseUrl}${endpoint}`, options).then(this._checkResponse);
+    return fetch(`${this._baseUrl}${endpoint}`, options)
+      .then(this._checkResponse)
+      .catch(this.handleError);
   }
 
   getUserInfo() {
     return this._request("/users/me", {
-      headers: { authorization: this._headers.authorization }
+      headers: this._headers
     });
   }
 
@@ -71,8 +73,8 @@ class Api {
   }
 
   handleError(err) {
-    console.error(err);
-    throw err;
+    console.error("API Error: ", err);
+    throw err;  
   }
 }
 

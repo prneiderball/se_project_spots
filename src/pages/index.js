@@ -191,13 +191,27 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
+
   const postForm = document.forms["new-post"];
+  if (!postForm) {
+    console.error("Form 'new-post' not found.");
+    return;
+  }
+
   const submitBtn = postForm.querySelector(".modal__submit-btn");
+  const nameInput = postForm.querySelector("#new-post-caption-input");
+  const imageUrlInput = postForm.querySelector("#image_url");
+
+  if (!submitBtn || !nameInput || !imageUrlInput) {
+    console.error("Required form elements are missing.");
+    return;
+  }
+
   const originalText = submitBtn.textContent;
   submitBtn.textContent = "Saving...";
 
-  const name = postForm["new-post-caption-input"].value.trim();
-  const link = postForm["image_url"].value.trim();
+  const name = nameInput.value.trim();
+  const link = imageUrlInput.value.trim(); 
 
   function makeRequest() {
     return api.addNewCard({ name, link })
@@ -211,30 +225,35 @@ function handleCardFormSubmit(evt) {
   }
 
   handleSubmit(makeRequest, evt)
-  .finally(() => {
-    submitBtn.textContent = originalText;
-    toggleSubmitButton(postForm);
-  });
+    .finally(() => {
+      submitBtn.textContent = originalText;
+      toggleSubmitButton(postForm);
+    });
 }
 
+
+
 function toggleSubmitButton(postForm) {
-  if (!postForm) return;
+  if (!postForm) {
+    console.warn("Post form not provided!");
+    return;
+  }
+
   const submitButton = postForm.querySelector(".modal__submit-btn");
-  const caption = postForm.querySelector("input[name='new-post-caption-input']");
-  const imageUrl = postForm.querySelector("input[name='image_url']");
+  const caption = postForm.querySelector("#new-post-caption-input");
+  const imageUrl = postForm.querySelector("#image_url");
 
   if (!submitButton || !caption || !imageUrl) {
     console.warn("Form elements not found.");
     return;
   }
 
-  const captionValue = caption.value.trim();
-  const imageUrlValue = imageUrl.value.trim();
-  const isValid = captionValue !== "" && imageUrlValue !== "";
+  const isValid = caption.value.trim() !== "" && imageUrl.value.trim() !== "";
 
   submitButton.disabled = !isValid;
   submitButton.classList.toggle("disabled", !isValid);
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   profileAddBtn.addEventListener("click", () => {
@@ -263,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
   editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
   newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
   document.forms["edit-profile"].addEventListener("submit", handleProfileFormSubmit);
-  document.forms["new-post"].addEventListener("submit", handleCardFormSubmit);
+  document.forms["new-post-form"].addEventListener("submit", handleCardFormSubmit);
   avatarModal.querySelector("form").addEventListener("submit", editAvatarFormSubmit);
   closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
