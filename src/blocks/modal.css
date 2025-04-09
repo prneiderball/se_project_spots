@@ -290,7 +290,7 @@
 
   .modal__container_delete {
     max-width: 300px;
-    height: 100%;
+    max-height: none;
   }
   .modal__title_delete {
     font-weight: 500;
