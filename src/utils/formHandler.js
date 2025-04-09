@@ -14,7 +14,7 @@ export function renderLoading(isLoading, button, buttonText = 'Save', loadingTex
   
     renderLoading(true, submitButton, initialText, loadingText);
   
-    request()
+    return request()
       .then(() => {
         evt.target.reset();
       })

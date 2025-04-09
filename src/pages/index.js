@@ -211,10 +211,10 @@ function handleCardFormSubmit(evt) {
   }
 
   handleSubmit(makeRequest, evt)
-    .finally(() => {
-      submitBtn.textContent = originalText;
-      toggleSubmitButton(postForm);
-    });
+  .finally(() => {
+    submitBtn.textContent = originalText;
+    toggleSubmitButton(postForm);
+  });
 }
 
 function toggleSubmitButton(postForm) {
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
   newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
   document.forms["edit-profile"].addEventListener("submit", handleProfileFormSubmit);
-  document.forms["new-post-form"].addEventListener("submit", handleCardFormSubmit);
+  document.forms["new-post"].addEventListener("submit", handleCardFormSubmit);
   avatarModal.querySelector("form").addEventListener("submit", editAvatarFormSubmit);
   closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
