@@ -286,6 +286,7 @@
   .delete-buttons-container {
     flex-direction: column;
     gap: 12px;
+    width: 75%;
   }
 
   .modal__container_delete {
@@ -301,7 +302,10 @@
     }
 
     .del__close-btn {
-      right: -20px;
-      top: -10px;
-    }
+      right: -4px;
+      top: -55px;
+  }
+  .modal__submit-btn_delete {
+    margin-bottom: 0;
+  }
 }
