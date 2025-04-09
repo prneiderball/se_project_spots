@@ -1,3 +1,5 @@
+// index.js
+
 import "./index.css";
 import { Settings, resetValidation, enableValidation } from "../validation.js";
 import Api from "../utils/Api.js";
@@ -5,38 +7,32 @@ import logo from "../images/logo.svg";
 import avatar from "../images/avatar.jpg";
 import pencilIcon from "../images/pencil-icon.svg";
 import plusIcon from "../images/plus.svg";
+import { renderLoading, handleSubmit } from "../utils/formhandler.js";
 
 const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template");
 const previewModal = document.querySelector("#preview-modal");
 const modalImage = previewModal?.querySelector(".modal__image");
 const modalCaption = previewModal?.querySelector(".modal__caption");
-const nameInput = document.querySelector("#name");
-const jobInput = document.querySelector("#description");
 const profileNameElement = document.querySelector(".profile__name");
 const profileJobElement = document.querySelector(".profile__description");
 const editProfileModal = document.querySelector("#edit-profile-modal");
 const newPostModal = document.querySelector("#new-post-modal");
-const imageUrlInput = document.querySelector("#image_url");
-const captionInput = document.querySelector("#new-post-caption-input");
-const profileEditBtn = document.querySelector(".profile__edit-btn");
+const avatarPreview = document.querySelector(".profile__avatar");
+const avatarEditBtn = document.querySelector(".profile__picture-btn");
 const profileAddBtn = document.querySelector(".profile__add-btn");
-const editProfileForm = document.querySelector("#edit-profile-form");
-const newPostForm = document.querySelector("#new-post-form");
 const closeBtns = document.querySelectorAll(".modal__close-btn, .modal__close-preview");
 const deleteModal = document.querySelector("#delete-modal");
 const deleteConfirmBtn = deleteModal.querySelector(".modal__submit-btn_delete");
 const deleteCancelBtn = deleteModal.querySelector(".modal__submit-btn_cancel");
 const avatarModal = document.querySelector("#edit-avatar-modal");
 const avatarInput = avatarModal.querySelector("#avatar_url");
-const avatarForm = avatarModal.querySelector("#edit-avatar-form");
 const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
-const avatarPreview = document.querySelector(".profile__avatar");
-const avatarEditBtn = document.querySelector(".profile__picture-btn");
+const profileEditBtn = document.querySelector(".profile__edit-btn");
 
-profileNameElement.textContent = "Loading...";
-profileJobElement.textContent = "Loading...";
-avatarPreview.src = "";
+let selectedCard;
+let selectedCardId;
+let currentUserId;
 
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -45,10 +41,6 @@ const api = new Api({
     "Content-Type": "application/json"
   }
 });
-
-let selectedCard;
-let selectedCardId;
-let currentUserId;
 
 api.getUserInfo()
   .then(userData => {
@@ -61,7 +53,6 @@ api.getUserInfo()
 
 api.getInitialCards()
   .then(cards => {
-    console.log("Loaded cards:", cards);
     cards.forEach(card => {
       const cardElement = createCardElement(card);
       cardList.appendChild(cardElement);
@@ -133,27 +124,22 @@ deleteCancelBtn.addEventListener("click", () => {
 });
 
 avatarEditBtn.addEventListener("click", () => {
-  enableValidation(Settings);
   openPopup(avatarModal);
-  resetValidation(avatarForm, Settings);  
+  resetValidation(avatarModal.querySelector("form"), Settings);
 });
 
 function editAvatarFormSubmit(evt) {
   evt.preventDefault();
-  const submitBtn = avatarForm.querySelector(".modal__submit-btn");
-  const originalText = submitBtn.textContent;
-  submitBtn.textContent = "Saving...";
-
   const avatarUrl = avatarInput.value.trim();
-  api.editProfileAvatar({ avatar: avatarUrl })
-    .then(userData => {
-      avatarPreview.src = userData.avatar || avatar;
-      closePopup(avatarModal);
-    })
-    .catch(err => console.error("Error updating avatar:", err))
-    .finally(() => {
-      submitBtn.textContent = originalText;
-    });
+
+  if (avatarUrl) {
+    api.editProfileAvatar({ avatar: avatarUrl })
+      .then(userData => {
+        avatarPreview.src = userData.avatar || avatar;
+        closePopup(avatarModal);
+      })
+      .catch(err => console.error("Error updating avatar:", err));
+  }
 }
 
 function openImageModal(imageUrl, imageCaption) {
@@ -188,62 +174,98 @@ function handleClickOutsideModal(e) {
 }
 
 function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  const submitBtn = editProfileForm.querySelector(".modal__submit-btn");
-  const originalText = submitBtn.textContent;
-  submitBtn.textContent = "Saving...";
-
-  api.editUserInfo({
-    name: nameInput.value,
-    about: jobInput.value
-  })
-    .then(userData => {
+  function makeRequest() {
+    const profileForm = document.forms["edit-profile"];
+    return api.editUserInfo({
+      name: profileForm.name.value,
+      about: profileForm.description.value
+    }).then(userData => {
       profileNameElement.textContent = userData.name;
       profileJobElement.textContent = userData.about;
       closePopup(editProfileModal);
-    })
-    .catch(err => console.error("Error updating profile:", err))
-    .finally(() => {
-      submitBtn.textContent = originalText;
     });
+  }
+
+  handleSubmit(makeRequest, evt);
 }
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  const submitBtn = newPostForm.querySelector(".modal__submit-btn");
+  const postForm = document.forms["new-post"];
+  const submitBtn = postForm.querySelector(".modal__submit-btn");
   const originalText = submitBtn.textContent;
   submitBtn.textContent = "Saving...";
 
-  const name = captionInput.value.trim();
-  const link = imageUrlInput.value.trim();
-  api.addNewCard({ name, link })
-    .then(cardData => {
-      const cardElement = createCardElement(cardData);
-      cardList.prepend(cardElement);
-      closePopup(newPostModal);
-      newPostForm.reset();
-    })
-    .catch(err => console.error("Error adding card:", err))
+  const name = postForm["new-post-caption-input"].value.trim();
+  const link = postForm["image_url"].value.trim();
+
+  function makeRequest() {
+    return api.addNewCard({ name, link })
+      .then(cardData => {
+        const cardElement = createCardElement(cardData);
+        cardList.prepend(cardElement);
+        closePopup(newPostModal);
+        postForm.reset();
+      })
+      .catch(err => console.error("Error adding new card:", err));
+  }
+
+  handleSubmit(makeRequest, evt)
     .finally(() => {
       submitBtn.textContent = originalText;
+      toggleSubmitButton(postForm);
     });
 }
 
+function toggleSubmitButton(postForm) {
+  if (!postForm) return;
+  const submitButton = postForm.querySelector(".modal__submit-btn");
+  const caption = postForm.querySelector("input[name='new-post-caption-input']");
+  const imageUrl = postForm.querySelector("input[name='image_url']");
+
+  if (!submitButton || !caption || !imageUrl) {
+    console.warn("Form elements not found.");
+    return;
+  }
+
+  const captionValue = caption.value.trim();
+  const imageUrlValue = imageUrl.value.trim();
+  const isValid = captionValue !== "" && imageUrlValue !== "";
+
+  submitButton.disabled = !isValid;
+  submitButton.classList.toggle("disabled", !isValid);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  profileEditBtn.addEventListener("click", () => {
-    nameInput.value = profileNameElement.textContent;
-    jobInput.value = profileJobElement.textContent;
-    resetValidation(editProfileForm, Settings);
-    openPopup(editProfileModal);
+  profileAddBtn.addEventListener("click", () => {
+    const postForm = document.forms["new-post"];
+    openPopup(newPostModal);
+    resetValidation(postForm, Settings);
+
+    const captionInput = postForm.querySelector("input[name='new-post-caption-input']");
+    const imageUrlInput = postForm.querySelector("input[name='image_url']");
+
+    if (captionInput && imageUrlInput) {
+      captionInput.addEventListener("input", () => toggleSubmitButton(postForm));
+      imageUrlInput.addEventListener("input", () => toggleSubmitButton(postForm));
+      toggleSubmitButton(postForm);
+    }
   });
 
-  profileAddBtn.addEventListener("click", () => openPopup(newPostModal));
-  editProfileForm.addEventListener("submit", handleProfileFormSubmit);
-  newPostForm.addEventListener("submit", handleCardFormSubmit);
-  avatarForm.addEventListener("submit", editAvatarFormSubmit);
-  closeBtns.forEach((btn) =>
-    btn.addEventListener("click", () => closePopup(btn.closest(".modal")))
-  );
+  profileEditBtn.addEventListener("click", () => {
+    const profileForm = document.forms["edit-profile"];
+    profileForm.name.value = profileNameElement.textContent;
+    profileForm.description.value = profileJobElement.textContent;
+    openPopup(editProfileModal);
+    resetValidation(profileForm, Settings);
+  });
+
+  editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
+  newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
+  document.forms["edit-profile"].addEventListener("submit", handleProfileFormSubmit);
+  document.forms["new-post-form"].addEventListener("submit", handleCardFormSubmit);
+  avatarModal.querySelector("form").addEventListener("submit", editAvatarFormSubmit);
+  closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
 
 enableValidation(Settings);
