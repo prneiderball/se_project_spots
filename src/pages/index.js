@@ -29,6 +29,10 @@ const avatarModal = document.querySelector("#edit-avatar-modal");
 const avatarInput = avatarModal.querySelector("#avatar_url");
 const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
 const profileEditBtn = document.querySelector(".profile__edit-btn");
+const profileForm = document.forms["edit-profile"];
+const avatarForm = document.forms["edit-avatar"];
+
+
 
 let selectedCard;
 let selectedCardId;
@@ -125,10 +129,11 @@ deleteCancelBtn.addEventListener("click", () => {
 
 avatarEditBtn.addEventListener("click", () => {
   openPopup(avatarModal);
-  resetValidation(avatarModal.querySelector("form"), Settings);
+  resetValidation(avatarForm, Settings);
 });
 
-evt.preventDefault();
+function editAvatarFormSubmit(evt) {
+  evt.preventDefault();
   const avatarUrl = avatarInput.value.trim();
 
   if (avatarUrl) {
@@ -148,7 +153,7 @@ evt.preventDefault();
         avatarSubmitBtn.textContent = originalText;
       });
   }
-
+}
 
 function openImageModal(imageUrl, imageCaption) {
   if (!previewModal || !modalImage || !modalCaption) return;
@@ -183,7 +188,6 @@ function handleClickOutsideModal(e) {
 
 function handleProfileFormSubmit(evt) {
   function makeRequest() {
-    const profileForm = document.forms["edit-profile"];
     return api.editUserInfo({
       name: profileForm.name.value,
       about: profileForm.description.value
@@ -239,8 +243,6 @@ function handleCardFormSubmit(evt) {
     });
 }
 
-
-
 function toggleSubmitButton(postForm) {
   if (!postForm) {
     console.warn("Post form not provided!");
@@ -257,11 +259,9 @@ function toggleSubmitButton(postForm) {
   }
 
   const isValid = caption.value.trim() !== "" && imageUrl.value.trim() !== "";
-
   submitButton.disabled = !isValid;
   submitButton.classList.toggle("disabled", !isValid);
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   profileAddBtn.addEventListener("click", () => {
@@ -280,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   profileEditBtn.addEventListener("click", () => {
-    const profileForm = document.forms["edit-profile"];
     profileForm.name.value = profileNameElement.textContent;
     profileForm.description.value = profileJobElement.textContent;
     openPopup(editProfileModal);
@@ -289,9 +288,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
   newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
-  document.forms["edit-profile"].addEventListener("submit", handleProfileFormSubmit);
+  profileForm.addEventListener("submit", handleProfileFormSubmit);
   document.forms["new-post-form"].addEventListener("submit", handleCardFormSubmit);
-  avatarModal.querySelector("form").addEventListener("submit", editAvatarFormSubmit);
+  avatarForm.addEventListener("submit", editAvatarFormSubmit);
   closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
 
