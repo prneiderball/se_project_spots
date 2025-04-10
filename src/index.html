@@ -6,29 +6,30 @@
     <meta name="author" content="P.R.Neider-Ball" />
     <meta name="description" content="Spots" />
     <meta name="keywords" content="Photo sharing, Portrait photographers" />
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>Spots</title>
   </head>
   <body class="page">
     <header class="header">
-      <img src="./images/logo.svg" alt="Spots Logo" class="header__logo" />
+      <img src="<%=require('../src/images/logo.svg')%>" alt="Spots Logo" class="header__logo" />
     </header>
     <main class="content">
       <section class="profile page__section">
-        <img
-          src="./images/avatar.jpg"
-          alt="Bessie Coleman"
-          class="profile__avatar"
-        />
+        <div class="profile__picture-container">
+        <img src="<%=require('../src/images/avatar.jpg')%>" alt="Bessie Coleman" class="profile__avatar" />
+          <button class="profile__picture-btn">
+            <img class="profile__edit-icon" src="<%= require('../src/images/editavatar.png') %>" alt="Edit icon" />
+          </button>
+        </div>
         <div class="profile__column">
           <h1 class="profile__name">Bessie Coleman</h1>
           <p class="profile__description">Civil Aviator</p>
           <button type="button" class="profile__edit-btn button">
-            <img src="./images/pencil-icon.svg" alt="Edit icon" />Edit Profile
+            <img src="<%=require('../src/images/pencil-icon.svg')%>" alt="Edit icon" />Edit Profile
           </button>
         </div>
         <button type="button" class="profile__add-btn button">
-          <img src="./images/plus.svg" alt="Plus icon" /> New Post
+          <img src="<%=require('../src/images/plus.svg')%>" alt="Plus icon" /> New Post
         </button>
       </section>
       <div class="cards page__section">
@@ -38,7 +39,7 @@
       </div>
     </main>
     <footer class="footer page__section">
-      <h2 class="footer__content">2024 © Spots</h2>
+      <h2 class="footer__content">2025 © Spots</h2>
     </footer>
     <template id="card-template">
       <li class="card">
@@ -62,7 +63,7 @@
       <div class="modal__container">
         <button type="button" class="modal__close-btn"></button>
         <h2 class="modal__title">Edit Profile</h2>
-        <form id="edit-profile-form" name="edit-profile" class="modal__form">
+        <form id="edit-profile" name="edit-profile" class="modal__form">
           <label for="name" class="modal__label">
             Name
             <input
@@ -99,7 +100,7 @@
       <div class="modal__container">
         <button type="button" class="modal__close-btn button"></button>
         <h2 class="modal__title">New Post</h2>
-        <form id="new-post-form" name="new-post" class="modal__form">
+        <form id="new-post" name="new-post" class="modal__form">
           <label for="image_url" class="modal__label">
             Image link
             <input
@@ -147,6 +148,48 @@
           />
           <figcaption class="modal__caption"></figcaption>
         </figure>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal">
+      <div class="modal__container modal__container_delete">
+        <button type="button" class="modal__close-btn del__close-btn"></button>
+        <h3 class="modal__title modal__title_delete">Are you sure you want to delete this image?</h3>
+        <form id="delete-form" class="modal__form delete__form" novalidate>
+          <div class="delete-buttons-container">
+            <button type="submit" class="modal__submit-btn modal__submit-btn_delete">Delete</button>          
+            <button type="button" class="modal__submit-btn modal__submit-btn_cancel">Cancel</button>
+          </div>
+        </form>        
+      </div>
+    </div>
+
+    <!--Edit avatar Modal-->
+<div class="modal modal--edit-avatar" id="edit-avatar-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close-btn button"></button>
+        <h2 class="modal__title">Edit profile avatar</h2>
+        <form id="edit-avatar" name="edit-avatar" class="modal__form">
+          <label for="avatar_url" class="modal__label">
+            Profile Picture
+            <input
+              id="avatar_url"
+              type="url"
+              class="modal__input"
+              placeholder="Paste the link to an image"
+              required
+            />
+            <span id="avatar_url-error" class="modal__error"></span>
+          </label>
+          <button
+            type="submit"
+            class="modal__submit-btn button modal__submit-btn--disabled"
+            disabled
+          >
+            Save
+          </button>
+        </form>
       </div>
     </div>
   </body>
