@@ -258,11 +258,10 @@ document.addEventListener("DOMContentLoaded", () => {
     resetValidation(profileForm, Settings);
   });
 
-  editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
-  newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
   profileForm.addEventListener("submit", handleProfileFormSubmit);
   document.forms["new-post"].addEventListener("submit", handleCardFormSubmit);
   avatarForm.addEventListener("submit", editAvatarFormSubmit);
+
   closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
 
