@@ -128,19 +128,27 @@ avatarEditBtn.addEventListener("click", () => {
   resetValidation(avatarModal.querySelector("form"), Settings);
 });
 
-function editAvatarFormSubmit(evt) {
-  evt.preventDefault();
+evt.preventDefault();
   const avatarUrl = avatarInput.value.trim();
 
   if (avatarUrl) {
-    api.editProfileAvatar({ avatar: avatarUrl })
-      .then(userData => {
-        avatarPreview.src = userData.avatar || avatar;
-        closePopup(avatarModal);
-      })
-      .catch(err => console.error("Error updating avatar:", err));
+    const originalText = avatarSubmitBtn.textContent;
+    avatarSubmitBtn.textContent = "Saving...";
+
+    function makeRequest() {
+      return api.editProfileAvatar({ avatar: avatarUrl })
+        .then(userData => {
+          avatarPreview.src = userData.avatar || avatar;
+          closePopup(avatarModal);
+        });
+    }
+
+    handleSubmit(makeRequest, evt)
+      .finally(() => {
+        avatarSubmitBtn.textContent = originalText;
+      });
   }
-}
+
 
 function openImageModal(imageUrl, imageCaption) {
   if (!previewModal || !modalImage || !modalCaption) return;
