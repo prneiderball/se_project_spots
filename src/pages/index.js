@@ -249,12 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const captionInput = postForm.querySelector("input[name='new-post-caption-input']");
     const imageUrlInput = postForm.querySelector("input[name='image_url']");
-
-    if (captionInput && imageUrlInput) {
-      captionInput.addEventListener("input", () => toggleSubmitButton(postForm));
-      imageUrlInput.addEventListener("input", () => toggleSubmitButton(postForm));
-      toggleSubmitButton(postForm);
-    }
   });
 
   profileEditBtn.addEventListener("click", () => {
