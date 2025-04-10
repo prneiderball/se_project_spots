@@ -31,7 +31,9 @@ const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
 const profileEditBtn = document.querySelector(".profile__edit-btn");
 const profileForm = document.forms["edit-profile"];
 const avatarForm = document.forms["edit-avatar"];
-
+const postForm = document.forms["new-post"];
+const nameInput = postForm.querySelector("#new-post-caption-input");
+const imageUrlInput = postForm.querySelector("#image_url");
 
 
 let selectedCard;
@@ -203,44 +205,20 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-
-  const postForm = document.forms["new-post"];
-  if (!postForm) {
-    console.error("Form 'new-post' not found.");
-    return;
-  }
-
-  const submitBtn = postForm.querySelector(".modal__submit-btn");
-  const nameInput = postForm.querySelector("#new-post-caption-input");
-  const imageUrlInput = postForm.querySelector("#image_url");
-
-  if (!submitBtn || !nameInput || !imageUrlInput) {
-    console.error("Required form elements are missing.");
-    return;
-  }
-
-  const originalText = submitBtn.textContent;
-  submitBtn.textContent = "Saving...";
-
+  
   const name = nameInput.value.trim();
-  const link = imageUrlInput.value.trim(); 
+  const link = imageUrlInput.value.trim();
 
   function makeRequest() {
     return api.addNewCard({ name, link })
-      .then(cardData => {
+      .then((cardData) => {
         const cardElement = createCardElement(cardData);
         cardList.prepend(cardElement);
         closePopup(newPostModal);
-        postForm.reset();
-      })
-      .catch(err => console.error("Error adding new card:", err));
+      });
   }
 
-  handleSubmit(makeRequest, evt)
-    .finally(() => {
-      submitBtn.textContent = originalText;
-      toggleSubmitButton(postForm);
-    });
+  handleSubmit(makeRequest, evt);
 }
 
 function toggleSubmitButton(postForm) {
@@ -289,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
   editProfileModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(editProfileModal));
   newPostModal.querySelector(".modal__close-btn").addEventListener("click", () => closePopup(newPostModal));
   profileForm.addEventListener("submit", handleProfileFormSubmit);
-  document.forms["new-post-form"].addEventListener("submit", handleCardFormSubmit);
+  document.forms["new-post"].addEventListener("submit", handleCardFormSubmit);
   avatarForm.addEventListener("submit", editAvatarFormSubmit);
   closeBtns.forEach(btn => btn.addEventListener("click", () => closePopup(btn.closest(".modal"))));
 });
