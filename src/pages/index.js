@@ -35,6 +35,13 @@ const postForm = document.forms["new-post"];
 const nameInput = postForm.querySelector("#new-post-caption-input");
 const imageUrlInput = postForm.querySelector("#image_url");
 
+const logoImg = document.querySelector(".header__logo");
+const pencilIconImg = document.querySelector(".profile__edit-btn img");
+const plusIconImg = document.querySelector(".profile__add-btn img");
+if (logoImg) logoImg.src = logo;
+if (pencilIconImg) pencilIconImg.src = pencilIcon;
+if (plusIconImg) plusIconImg.src = plusIcon;
+
 
 let selectedCard;
 let selectedCardId;
