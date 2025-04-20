@@ -29,7 +29,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "babel-loader",
-        exclude: "/node_modules/",
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
@@ -45,7 +45,24 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|webp|gif)$/,
+        test: /\.html$/i,
+        loader: "html-loader",
+        options: {
+          sources: {
+            list: [
+              '...',
+              {
+                tag: 'img',
+                attribute: 'src',
+                type: 'src',
+              },
+            ],
+          },
+          esModule: false,
+        },
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|webp|gif)$/i,
         type: "asset/resource",
         generator: {
           filename: "images/[name][ext]",
