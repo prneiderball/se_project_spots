@@ -32,7 +32,7 @@ Spots addresses the need for a simple yet effective way to present visual conten
 
 ## Demo
 
-- **Live Project:** [Spots - GitHub Pages](https://prneiderball.github.io/se_project_spots/)
+- **Live Project:** [Spots - GitHub Pages](https://prneiderball.github.io/se_project_spots/) (currently under construction)
 
 - **Explanation Video:** [View Project Video](https://drive.google.com/file/d/1bv-_z_MxtcVmtyQ65WCxZc-cLwJTaFsD/view?usp=sharing)
 
