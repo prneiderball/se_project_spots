@@ -29,6 +29,7 @@
     "cssnano": "5.1.12",
     "file-loader": "^6.2.0",
     "gh-pages": "^6.3.0",
+    "html-loader": "^5.1.0",
     "html-webpack-plugin": "5.5.0",
     "mini-css-extract-plugin": "2.6.1",
     "postcss-loader": "7.0.1",

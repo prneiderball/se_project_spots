@@ -1,4 +1,3 @@
-// index.js
 
 import "./index.css";
 import { Settings, resetValidation, enableValidation } from "../validation.js";
